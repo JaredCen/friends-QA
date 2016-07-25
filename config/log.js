@@ -4,7 +4,7 @@ var path = require('path'),
 // 日志记录配置
 var logger = Logger({
 	dir: path.resolve(__dirname, '../logs'),
-	categories: ['http', 'mongodb'],
+	categories: ['http', 'mongodb', 'redis'],
 	format: '[{category}.]YYYY-MM-DD[.log]',
 	timestamp: true
 });

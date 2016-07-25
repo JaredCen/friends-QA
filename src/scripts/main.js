@@ -52,7 +52,7 @@ var qaSDK = {
 			window.location.href = window.location.href.split("/visit/")[0]+"/create";
 		});
 		$('.check').on('tap', function (){
-			window.location.href = window.location.href.split("/other/")[0]+"/other/check/"+window.location.href.split("/other/")[1];
+			window.location.href = window.location.href.split("/visit/")[0]+"/visit/check/"+window.location.href.split("/visit/")[1];
 		});
 	},
 	visitSelf: function (){
@@ -65,11 +65,11 @@ var qaSDK = {
 		});
 
 		$('.remind').on('tap', function (){
-			window.location.href = window.location.href.split("/self/")[0]+"/self/check/"+window.location.href.split("/self/")[1];
+			window.location.href = window.location.href.split("/visit/")[0]+"/visit/check/"+window.location.href.split("/visit/")[1];
 		});
 
 		$('.user-info').on('tap', function (){
-			window.location.href = window.location.href.split("/self/")[0]+"/self/check/"+window.location.href.split("/self/")[1]+"?open_id="+$(this).attr('data-openid');
+			window.location.href = window.location.href.split("/visit/")[0]+"/visit/check/"+window.location.href.split("/visit/")[1]+"?open_id="+$(this).attr('data-openid');
 		});
 	},
 	check: function (){
@@ -174,7 +174,7 @@ var qaSDK = {
 				success: function (data){
 					setTimeout(function (){
 						$('#loading-toast').css('display', 'none');
-						window.location.href = postUrl.split('/answer/')[0]+"/visit/other/"+JSON.parse(data).page_id;
+						window.location.href = postUrl.split('/answer/')[0]+"/visit/"+JSON.parse(data).page_id;
 					}, 500);
 				},
 				error: function (xhr, type){

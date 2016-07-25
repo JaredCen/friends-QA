@@ -7,7 +7,9 @@ var QuestionSchema = new Schema({
 	question: String,
 	img_src: String,
 	sex: String,
-	answer: Array
+	answer: Array,
+    create_at: {type: Date, default: Date.now},
+    update_at: {type: Date}
 });
 var QuestionModel = connect.model('Question', QuestionSchema);
 var QuestionDAO = function(){};

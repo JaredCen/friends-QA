@@ -13,6 +13,19 @@ xtpl(app, {
 	views: './views'
 });
 
+// redis configs
+var redisConfig = JSON.parse(process.env.redis);
+console.log(redisConfig);
+app.keys = ['yeyejohnshwang'];
+app.use(session({
+    store: {
+	    host: redisConfig.host,
+	    port: redisConfig.port,
+	    ttl: 60*60*24
+    }
+  }
+));
+
 // 挂载静态文件
 app.use(serve(__dirname + '/public'));
 

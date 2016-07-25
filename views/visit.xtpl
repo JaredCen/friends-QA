@@ -13,10 +13,10 @@
 	<section id="self-header">
 		<div class="image">
 			<div class="container">
-				<img src="/img/headimage.jpg">
+				<img src="{{user_ques_msg.head_img_url}}">
 			</div>
 		</div>
-		<span class="username">{{user_ques_msg.open_id}}</span>
+		<span class="username">{{user_ques_msg.nickname}}</span>
 	</section>
 	<section id="result-button">
 		<button class="connect419">419</button>
@@ -34,7 +34,7 @@
 				</div>
 			</div>
 		</div>
-		<span class="word">擦，你好意思说你认识我？</span>
+		<span class="word">{{user_ans_msg.evaluation}}</span>
 	</section>
 	<section id="result-button">
 		<button class="play">我也要玩</button>
@@ -54,11 +54,11 @@
 		<div class="user-info" data-openid="{{this.open_id}}">
 			<div class="image-container">
 				<div class="container">
-					<img src="{{this.user_img}}">
+					<img src="{{this.head_img_url}}">
 				</div>
 			</div>
 			<span class="info">
-				<span class="username">{{this.open_id}}</span>
+				<span class="username">{{this.nickname}}</span>
 				<span class="word">{{this.evaluation}}</span>
 			</span>
 			<span class="score">{{this.score}}</span>

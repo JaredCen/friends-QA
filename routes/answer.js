@@ -1,12 +1,43 @@
 var router = require("koa-router")(),
 	UserQues = require('../models/userQues.js'),
 	UserAns = require('../models/userAns.js'),
+	redis = require('../config/redis.js'),
 	parse = require('co-body');
 
 router.get('/:id', function *(next){
-	var userAnsMsg = yield UserAns.find({
+	// 微信授权
+	if (!this.session.openid && !this.query.code){
+		this.redirect(wechatClient.getAuthorizeURL(encodeURI("https://"+this.request.header.host+"/qa/answer/"+this.params.id), '', 'snsapi_userinfo'));
+	} else if (!this.session.openid && this.query.code){
+		wechatClient.getAccessToken(this.query.code, function(err, result){
+			if (err){
+				console.warn("oauth授权失败！");
+			} else {
+				this.session.oauth_access_token = result.data.access_token;
+				this.session.openid = result.data.openid;
+			}
+		});
+		var UserMsg = yield User.findOne({open_id: this.session.openid});
+		if (UserMsg == ''){
+			var userMsg = {};
+			wechatClient.getUser(this.session.openid, function(err, result){
+				console.log(result);
+				userMsg = {
+					open_id: result.data.openid,
+					sex: result.data.sex,
+					nickname: result.data.nickname,
+					head_img_url: result.data.headimgurl,
+					union_id: result.data.unionid
+				};
+				User.save(userMsg);
+			});
+			Redis.setUserMsg(userMsg);
+		}
+	}
+
+	var userAnsMsg = yield UserAns.findOne({
 		page_id: this.params.id,
-		open_id: 'jai'
+		open_id: this.session.openid
 	});
 	var userAnsList = yield UserAns.find({
 		page_id: this.params.id
@@ -24,10 +55,10 @@ router.get('/:id', function *(next){
 });
 
 router.get('/begin/:id', function *(next){
-	var userQuesMsg = yield UserQues.find({page_id: this.params.id});
+	var userQuesMsg = yield UserQues.findOne({page_id: this.params.id});
 	yield this.render('begin', {
 		isAnswer: true,
-		questionMsg: userQuesMsg[0],
+		questionMsg: userQuesMsg,
 		url: "http://"+this.host+this.url,
 		method: "answerBegin(answerCorrect, url)"
 	});
@@ -46,9 +77,12 @@ router.post('/begin/:id', function *(next){
 			correct: userAnsJson.data[i].correct
 		});
 	}
+	var userMsg = redis.getUserMsg(this.session.openid);
 	UserAns.save({
-		open_id: 'iris',
-		user_img: '/img/jordon.jpg',
+		open_id: this.session.openid,
+		nickname: userMsg.nickname,
+		head_img_url: userMsg.head_img_url,
+		sex: userMsg.sex,
 		page_id: this.params.id,
 		q_a: q_a_array,
 		score: userAnsJson.score,

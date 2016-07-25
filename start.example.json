@@ -18,7 +18,7 @@
           "host": "10.10.7.62",
           "hostR": "10.10.40.94",
           "port": "27017",
-          "db": "activ-qa",
+          "db": "activ_qa",
           "opts": {
             "user": "root",
             "pass": "shendun@mon0301",

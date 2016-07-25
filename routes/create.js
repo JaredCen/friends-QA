@@ -1,9 +1,12 @@
 var router = require("koa-router")(),
 	Question = require('../models/questions.js'),
 	UserQues = require('../models/userQues.js'),
+	redis = require('../config/redis.js'),
 	path = require('path'),
 	fs = require('fs'),
 	parse = require('co-body');
+
+var	appid = process.env.appid;
 
 // 录入问题库脚本
 router.get('/update', function *(next){
@@ -70,8 +73,12 @@ router.post('/begin', function *(next){
 			answer: questionArray[0].answer
 		});
 	}
+	var userMsg = redis.getUserMsg(this.session.openid);
 	var userQuesObj = {
-		open_id: "junrey",
+		open_id: this.session.openid,
+		nickname: userMsg.nickname,
+		head_img_url: userMsg.head_img_url,
+		sex: userMsg.sex,
 		page_id: pageId,
 		q_a: q_a_array
 	};
@@ -81,8 +88,15 @@ router.post('/begin', function *(next){
 });
 
 router.get('/finish/:id', function *(next){
+	// 调用微信js-sdk
+	var jsticket = redis.getTicket(appid);
+	var noncestr = Math.random().toString(36).substr(2);
+
 	yield this.render('finish', {
-		// null
+		appid: appid,
+		timestamp: Math.floor( +new Date() / 1000),
+		nonceStr: noncestr,
+		signature: jsticket
 	});
 });
 

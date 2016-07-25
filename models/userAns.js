@@ -4,11 +4,15 @@ var connect = require('./connect.js'),
 var Schema = mongoose.Schema;
 var UserAnsSchema = new Schema({
 	open_id: String,
-	user_img: String,
+	nickname: String,
+	head_img_url: String,
+	sex: Number,
 	page_id: String,
 	q_a: Array,
 	score: String,
-	evaluation: String
+	evaluation: String,
+    create_at: {type: Date, default: Date.now},
+    update_at: {type: Date}
 });
 
 var UserAnsModel = connect.model('UserAns', UserAnsSchema);
@@ -21,6 +25,10 @@ UserAnsDAO.prototype.save = function (obj){
 
 UserAnsDAO.prototype.find = function (obj){
 	return UserAnsModel.find(obj).exec();
+}
+
+UserAnsDAO.prototype.findOne = function (obj){
+	return UserAnsModel.findOne(obj).exec();
 }
 
 module.exports = new UserAnsDAO();
