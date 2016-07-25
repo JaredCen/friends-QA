@@ -1,0 +1,189 @@
+[
+	{
+		id: 1,
+		question: "存不存在异性闺蜜这纯洁关系",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FltmYEf3BGqXTImoM2Fxzsi1TMZe",
+		sex: "male",
+		answer: ["A、存在，请叫我小纯洁", "B、不存在，都TM是骗人的", "C、看脸吧，越丑越纯"]
+	},{
+		id: 2,
+		question: "我抽烟吗？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fnb3SOS4lw66HgZ8og25OHJfPNnC",
+		sex: "male",
+		answer: ["A、从不抽", "B、偶尔抽", "C、天天抽", "D、谁抽我抽谁"]
+	},{
+		id: 3,
+		question: "我理想中的Cup Size 是？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fhdu5Dp3WM-l_GECLJWpJrXtDA_T",
+		sex: "male",
+		answer: ["A、A", "B、B", "C、C", "D、D", "E、E", "F、F", "G、你咋不上天吖"]
+	},{
+		id: 4,
+		question: "我的初吻发生在：",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fkp9rKUOIj_-NRxhVgP-BowMpOnz",
+		sex: "male",
+		answer: ["A、初中", "B、高中", "C、大学", "D、还在呢，你要吗"]
+	},{
+		id: 5,
+		question: "我会不会催好朋友还钱？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fkp9rKUOIj_-NRxhVgP-BowMpOnz",
+		sex: "male",
+		answer: ["A、会，欠债还钱，天经地义", "B、不会，好朋友有钱自己会还", "C、有钱不还算好朋友吗", "D、想催，但却不忍心，活该"]
+	},{
+		id: 6,
+		question: "我最讨厌哪种人？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FjRKmjlagTFpfzvuzhB7gWpcgZeh",
+		sex: "male",
+		answer: ["A、伪文青，装逼狗", "B、绿茶婊，爱炫富", "C、伪君子，言而无信", "D、拍马屁，还有狗屁"]
+	},{
+		id: 7,
+		question: "我最大的缺点是什么？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FoVlWJvRAhLiFzXAMOWZLlcOBZEW",
+		sex: "male",
+		answer: ["A、太懒，只想来个葛优躺", "B、颜值太高，都以为我靠脸吃饭", "C、选择困难症，太多人追不知怎么挑", "D、智商太高，显得身边朋友太白痴"]
+	},{
+		id: 8,
+		question: "我最喜欢喝什么酒？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FrO0JKWUJjziK73N4QA5Wg8zJDgg",
+		sex: "male",
+		answer: ["A、葡萄酒", "B、洋酒", "C、啤酒", "D、滴酒不沾","E、无酒不欢"]
+	},{
+		id: 9,
+		question: "绝逼接受不了的食物是？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fsr4g9VBFdo5VdLSmavK6rK4DoLo",
+		sex: "male",
+		answer: ["A、香菜", "B、芥末", "C、臭豆腐", "D、咸豆脑","E、都行"]
+	},{
+		id: 10,
+		question: "我挑女朋友最看重什么？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fhr6i9--LIBUCnvznmP1qwLiHCJX",
+		sex: "male",
+		answer: ["A、颜值高，腿长胸大脸好看", "B、有内涵，文艺青年情怀深", "C、女汉子，能搬砖会翻墙", "D、都可以，是个女的就好"]
+	},{
+		id: 11,
+		question: "我喜欢吃哪家的快餐？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FhCJvN4qdQ6_iAv855UTHT6I0Xtf",
+		sex: "male",
+		answer: ["A、肯德基", "B、麦当劳", "C、垃圾食品，都不吃"]
+	},{
+		id: 12,
+		question: "我小学的时候哪一科成绩最好？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FkVnbQwRNAHINZN_77WvUbZ1PwQ6",
+		sex: "male",
+		answer: ["A、语文", "B、数学", "C、英语","D、逃学","E、都很好，叫我学霸","F、都很差，我是学渣"]
+	},{
+		id: 13,
+		question: "分手后还能不能做朋友",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Ftvcy35-Aq6MHlAwhVggVqj67Mql",
+		sex: "male",
+		answer: ["A、能，再见亦是朋友", "B、不能，拖泥带水不像样", "C、朋友就不要了，pao友可以考虑"]
+	},{
+		id: 14,
+		question: "我现在是单身吗？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FpTOagOWBThBQ-TRDWrZmhhIls7a",
+		sex: "male",
+		answer: ["A、是的", "B、不是", "C、你猜", "D、不要管，撩我"]
+	},{
+		id: 15,
+		question: "出门有样东西不能带，我会放弃",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FvHuylNym01gNYBPZynjfThy6xht",
+		sex: "male",
+		answer: ["A、手机", "B、钱包", "C、钥匙", "D、脑子"]
+	},{
+		id: 16,
+		question: "给我5cm我会选择加在哪里？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FkxmMne-ZO3Lxlqllad4DlY3ImDi",
+		sex: "female",
+		answer: ["A、身高", "B、胸围", "C、钞票厚度", "D、男票的丁丁"]
+	},{
+		id: 17,
+		question: "会不会看伴侣的手机？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FprCwF9i7Vo1xL935giY2dDvzlYc",
+		sex: "female",
+		answer: ["A、会，这年头不看紧点不行吖", "B、不会，我相信他是个好人", "C、相爱容易，每个人都有他的手机"]
+	},{
+		id: 18,
+		question: "我抽烟吗？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fnb3SOS4lw66HgZ8og25OHJfPNnC",
+		sex: "female",
+		answer: ["A、从不抽", "B、偶尔抽", "C、天天抽", "D、谁抽我抽谁"]
+	},{
+		id: 19,
+		question: "前任婚礼要不要去呢？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fl_xnvTDRHIq4KaUqhAwv4k4SLgE",
+		sex: "female",
+		answer: ["A、去，凑桌麻将", "B、忙，下次再去", "C、哼，带现任去炫耀下"]
+	},{
+		id: 20,
+		question: "朋友圈会不会屏蔽父母？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FkVnbQwRNAHINZN_77WvUbZ1PwQ6",
+		sex: "female",
+		answer: ["A、会，不然怎么愉快的装逼", "B、不会，一家人应该坦诚相对", "C、无所谓啦，反正他们没有微信"]
+	},{
+		id: 21,
+		question: "我会不会催好朋友还钱？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fkp9rKUOIj_-NRxhVgP-BowMpOnz",
+		sex: "female",
+		answer: ["A、会，欠债还钱，天经地义", "B、不会，好朋友有钱自己会还", "C、有钱不还算好朋友吗","D、想催，但却不忍心，活该"]
+	},{
+		id: 22,
+		question: "我喜欢看什么剧？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FiJf4fYTFEWHebNNjGD7qddjfYGm",
+		sex: "female",
+		answer: ["A、韩剧", "B、美剧", "C、国产剧", "D、TVB剧","E、人间喜剧"]
+	},{
+		id: 23,
+		question: "我爱吃日本料理吗?",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FgQZWludgwV4m9L7Ht37L8UadTB6",
+		sex: "female",
+		answer: ["A、爱吃，实在太好吃啦,Yummy!", "B、不爱，生冷东西不吃", "C、偶尔去吃一次", "D、社会主义接班人，不吃日货"]
+	},{
+		id: 24,
+		question: "我喜欢看电影吗?",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FgQZWludgwV4m9L7Ht37L8UadTB6",
+		sex: "female",
+		answer: ["A、喜欢", "B、不喜欢", "C、看什么电影才是重点", "D、跟谁一起看才是重点"]
+	},{
+		id: 25,
+		question: "我挑男朋友最看重什么？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FlyMfrSF-I2HqwHtnGkt0OGy8VuD",
+		sex: "female",
+		answer: ["A、钱钱钱，随时给我买买买", "B、长得帅，最好帅到能当饭吃", "C、安全感，比003更加安全可靠", "D、要宠我，能把我宠上天就好了","E、要专一，只许对我一个人好","F、有才华，无论拍拍拍or啪啪啪都行"]
+	},{
+		id: 26,
+		question: "我现在是单身吗？",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FpTOagOWBThBQ-TRDWrZmhhIls7a",
+		sex: "female",
+		answer: ["A、是的", "B、不是", "C、你猜", "D、不要管，撩我"]
+	},{
+		id: 27,
+		question: "结婚该选择爱你的人还是你爱的人",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FksnacVs1rZdYwup-KyO1kGZ2o6b",
+		sex: "female",
+		answer: ["A、我爱的人", "B、爱我的人", "C、不管，除了宋仲基谁都不嫁"]
+	},{
+		id: 28,
+		question: "我最想去哪里旅游",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FrhD3d4UoD5_N_AoOwnozAJZ10fE",
+		sex: "female",
+		answer: ["A、马尔代夫去看海", "B、南极看企鹅", "C、北欧看极光", "D、澳洲看袋鼠","E、带我走，无论去哪"]
+	},{
+		id: 29,
+		question: "我的初吻发生在：",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fkp9rKUOIj_-NRxhVgP-BowMpOnz",
+		sex: "female",
+		answer: ["A、初中", "B、高中", "C、大学", "D、还在呢，你要吗"]
+	},{
+		id: 30,
+		question: "出门有样东西不能带，我会放弃",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/FvHuylNym01gNYBPZynjfThy6xht",
+		sex: "female",
+		answer: ["A、手机", "B、钱包", "C、钥匙", "D、美瞳","E、脑子"]
+	},{
+		id: 31,
+		question: "如果只能有一个愿望，我会选：",
+		img_src: "http://7xotti.com2.z0.glb.qiniucdn.com/Fu-_iwKXoZVOSu669u-FQlSwH6XT",
+		sex: "female",
+		answer: ["A、中五百万", "B、怎么吃都不胖", "C、世界和平", "D、越来越漂亮","E、环游世界"]
+	}
+]

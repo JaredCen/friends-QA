@@ -1,0 +1,100 @@
+{{extend ("./index.xtpl")}}
+
+{{#block ("title")}}
+	{{#if (isAnswer)}}
+		<title>你懂我吗？</title>
+	{{else}}
+		<title>谁最懂我</title>
+	{{/if}}
+{{/block}}
+
+{{#block ("body")}}
+	<section id="ques-header">
+		<div class="order">
+			{{#each (range(1,6))}}
+				<div class="container">
+					{{#if (this === 1)}}
+					<span class="order-{{this}} selected">{{this}}</span>
+					{{else}}
+					<span class="order-{{this}}">{{this}}</span>
+					{{/if}}
+				</div>
+			{{/each}}
+		</div>
+		<div class="line-container">
+			<span></span>
+		</div>
+	</section>
+
+	{{#if (isAnswer)}}
+
+		{{#each (questionMsg.q_a)}}
+		<section class="ques-pic {{#if (xindex === 0)}}active{{/if}}" data-id="{{xindex+1}}" data-sql-id="{{this.sql_id}}">
+			<div class="container">
+				<img src="{{this.img_src}}">
+				<span class="ques">{{this.question}}</span>			
+			</div>
+		</section>
+
+		<section class="ans-group {{#if (xindex === 0)}}active{{/if}}" data-id="{{xindex+1}}" data-sql-id="{{this.sql_id}}">
+			{{#each (this.answer)}}
+				<div class="answer">
+					<span>{{this}}</span>
+				</div>
+			{{/each}}
+		</section>
+		{{/each}}
+		{{set (loading_word = '计算中...')}}
+
+	{{else}}
+
+		{{#each (question_visible)}}
+		<section class="ques-pic {{#if (xindex === 0)}}active{{/if}}" data-id="{{xindex+1}}" data-sql-id="{{this.id}}">
+			<div class="container">
+				<img src="{{this.img_src}}">
+				<span class="ques">{{this.question}}</span>			
+			</div>
+			<div class="exchange">
+				<span>换一题</span>
+			</div>
+		</section>
+
+		<section class="ans-group {{#if (xindex === 0)}}active{{/if}}" data-id="{{xindex+1}}" data-sql-id="{{this.id}}">
+			{{#each (this.answer)}}
+				<div class="answer">
+					<span>{{this}}</span>
+				</div>
+			{{/each}}
+		</section>
+		{{/each}}
+		{{set (loading_word = '数据上传中...')}}
+
+	{{/if}}
+
+	{{include ("./loading.xtpl")}}
+{{/block}}
+
+{{#block ("script")}}
+	{{#if (isAnswer)}}
+		var answerCorrect = [], url = encodeURI('{{url}}');
+		{{#each (questionMsg.q_a)}}
+			answerCorrect.push({
+				sqlId: {{this.sql_id}},
+				question: "{{this.question}}",
+				answerCorrect: "{{this.answer_correct}}"
+			});
+		{{/each}}
+	{{else}}
+		var questionHidden = [], url = encodeURI('{{url}}');
+		{{#each (question_hidden)}}
+		questionHidden.push({
+			id: {{xindex+1}},
+			sqlId: {{this.id}},
+			question: "{{this.question}}",
+			imgSrc: "{{this.img_src}}",
+			answer: [{{#each (this.answer)}}"{{this}}",{{/each}}]
+		});
+		{{/each}}
+	{{/if}}
+	qaSDK.{{method}};
+{{/block}}

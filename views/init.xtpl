@@ -1,0 +1,56 @@
+{{extend ("./index.xtpl")}}
+
+{{#block ("title")}}
+	{{#if (isAnswer)}}
+		<title>你懂我吗？</title>
+	{{else}}
+		<title>谁最懂我</title>
+	{{/if}}
+{{/block}}
+
+
+{{#block ("body")}}
+	{{#if (isAnswer)}}
+		<section id="visit-header">
+			<img src="/img/welcome.png">
+		</section>
+
+		{{#if (userList[0].user_img)}}
+		<section id="user-group">
+			<div class="container">
+				{{#each (userList)}}
+					<div class="user-info">
+						<div class="container">
+							<img src="{{this.user_img}}">
+						</div>
+						<span>{{this.score}}</span>
+					</div>
+				{{/each}}
+			</div>
+		</section>
+		{{/if}}
+
+		<section id="visit-body">
+			<button class="begin-answer">开始答题</button>
+		</section>
+	{{else}}
+		<section id="visit-header">
+			<img src="/img/question.png">
+		</section>
+
+		<section id="word">
+			<span>看看谁才是我的真爱粉！</span>
+		</section>
+
+		<section id="visit-body">
+			<button class="begin-create">开始出题</button>
+		</section>
+	{{/if}}
+{{/block}}
+
+{{#block ("script")}}
+	{{#if (isAnswer)}}
+		var url = encodeURI("{{url}}");
+	{{/if}}
+	qaSDK.{{method}};
+{{/block}}

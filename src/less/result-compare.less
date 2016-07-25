@@ -1,0 +1,57 @@
+#result-compare-list {
+	margin: 0 @margin-row;
+	padding-bottom: 3rem;
+	.result {
+		border: 2px solid @blue;
+		border-radius: @radius;
+		display: flex;
+		flex-direction: column;
+		padding: .2rem .4rem;
+		margin: .6rem 0;
+		.question,
+		.answer {
+			margin: .1rem 0;
+		}
+		.question {
+			font-size: .8rem;
+			color: rgba(0, 0, 0, .6);
+		}
+		.answer {
+			font-size: .75rem;
+			color: @blue;
+		}
+	}
+	.wrong {
+		border: 2px solid @red !important;
+		.answer {
+			color: @red !important;
+		}
+	}
+}
+
+#result-compare-button {
+	position: fixed;
+	width: 90%;
+	bottom: 0;
+	padding: .6rem @margin-row .8rem @margin-row;
+	display: flex;
+	background-color: #fff;
+	.connect,
+	.play {
+		color: #fff;
+		font-size: .88rem;
+		padding: .4rem 0;
+		border-radius: @radius;
+	}
+	.connect {
+		flex: 2;
+		margin-right: 1rem;
+		background-color: @red;
+		border: 1px solid @red;
+	}
+	.play {
+		flex: 1;
+		background-color: @blue;
+		border: 1px solid @blue;
+	}
+}

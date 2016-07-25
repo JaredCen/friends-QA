@@ -1,0 +1,62 @@
+#user-list {
+	margin: 0 @margin-row;
+	position: relative;
+	border: 1px solid @blue;
+	margin-bottom: 2.8rem;
+	.remind {
+		display: flex;
+		align-items: center;
+		margin: 0 .5rem .5rem .5rem;
+		padding: .2rem 0;
+		font-size: .8rem;
+		color: rgba(0, 0, 0, .4);
+		border-bottom: 1px solid rgba(0, 0, 0, .4);
+		.word {
+			flex: 1;
+		}
+		.icon {
+			font-size: 1rem;
+		}
+	}
+	.user-info {
+		display: flex;
+		margin: 0 .5rem .5rem .5rem;
+		padding: .5rem 0;
+		align-items: center;
+		border-bottom: 1px solid rgba(0, 0, 0, .4);
+	}
+	.image-container {
+		width: 20%;
+	}
+	.container {
+		position: relative;
+		padding: 50% 0;
+		img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			box-sizing: border-box;
+			border: 2px solid @blue;
+		}
+	}
+	.info {
+		margin-left: .5rem;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		.username {
+			font-size: .88rem;
+		}
+		.word {
+			font-size: .8rem;
+			color: rgba(0, 0, 0, .5);
+		}
+	}
+	.score {
+		font-size: 1.2rem;
+		color: red;
+	}
+}

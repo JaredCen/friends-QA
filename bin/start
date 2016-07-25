@@ -1,0 +1,23 @@
+var app = require('../app.js'),
+	debug = require('debug')('http'),
+	http = require('http'),
+	logger = require('../config/log.js');
+
+// 很遗憾，koa没有app.set()，app.get()方法
+// app.set('port', process.env.PORT || '3000');
+// app.get('port');
+
+http.createServer(app.callback())
+	.listen(process.env.PORT || '3000')
+	.on('listening', function() {
+		  var bind = typeof this.address() === 'string'
+		    ? 'pipe ' + this.address()
+		    : 'port ' + this.address().port;
+		  debug('Listening on ' + bind);
+	})
+	.on('error', function(err) {
+		if (process.env.NODE_ENV != 'test') {
+			logger.http(err);
+			console.log(err);
+		}
+	});

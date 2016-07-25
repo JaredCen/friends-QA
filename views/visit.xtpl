@@ -1,0 +1,77 @@
+{{extend ("./index.xtpl")}}
+
+{{#block ("title")}}
+	{{#if (visit_self)}}
+		<title>谁最懂我</title>
+	{{else}}
+		<title>你懂我吗？</title>
+	{{/if}}
+{{/block}}
+
+{{#block ("body")}}
+	{{#if (visit_self)}}
+	<section id="self-header">
+		<div class="image">
+			<div class="container">
+				<img src="/img/headimage.jpg">
+			</div>
+		</div>
+		<span class="username">{{user_ques_msg.open_id}}</span>
+	</section>
+	<section id="result-button">
+		<button class="connect419">419</button>
+		<button class="connect520">520</button>
+	</section>
+	{{else}}
+	<section id="result-header">
+		<div class="ball">
+			<div class="container">
+				<div class="ball-in">
+					<div class="ball-full"></div>
+					<div class="ball-score">
+						<span>{{user_ans_msg.score}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<span class="word">擦，你好意思说你认识我？</span>
+	</section>
+	<section id="result-button">
+		<button class="play">我也要玩</button>
+		<button class="check">查看答案</button>
+	</section>
+	{{/if}}
+
+	<section id="user-list">
+		{{#if (visit_self)}}
+		<div class="remind">
+			<span class="word">点击列表查看详情</span>
+			<span class="icon">></span>
+		</div>
+		{{/if}}
+
+		{{#each (user_ans_list)}}
+		<div class="user-info" data-openid="{{this.open_id}}">
+			<div class="image-container">
+				<div class="container">
+					<img src="{{this.user_img}}">
+				</div>
+			</div>
+			<span class="info">
+				<span class="username">{{this.open_id}}</span>
+				<span class="word">{{this.evaluation}}</span>
+			</span>
+			<span class="score">{{this.score}}</span>
+		</div>
+		{{/each}}
+	</section>
+
+	<section id="footer">
+		<span>更多赚钱的小玩意 ></span>
+		<button>Pokemon Go!</button>
+	</section>
+{{/block}}
+
+{{#block ("script")}}
+	qaSDK.{{method}};
+{{/block}}

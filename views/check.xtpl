@@ -1,0 +1,43 @@
+{{extend ("./index.xtpl")}}
+
+{{#block ("title")}}
+	<title>谁最懂我</title>
+{{/block}}
+
+{{#block ("body")}}
+	{{#if (visit_self)}}
+
+	<section id="result-compare-list">
+		{{#each (user_ques_msg.q_a)}}
+		<div class="result">
+			<span class="question">{{this.question}}</span>
+			<span class="answer">{{this.answer_correct}}</span>
+		</div>
+		{{/each}}
+	</section>
+	<section id="result-compare-button">
+		<button class="connect">更多会赚钱的小玩意</button>
+		<button class="play">我也要玩</button>
+	</section>
+
+	{{else}}
+
+	<section id="result-compare-list">
+		{{#each (user_ans_msg.q_a)}}
+		<div class="result {{#if (!this.correct)}}wrong{{/if}}">
+			<span class="question">{{this.question}}</span>
+			<span class="answer">{{#if (identity)}}{{this.answer_select}}{{else}}{{this.answer_correct}}{{/if}}</span>
+		</div>
+		{{/each}}
+	</section>
+	<section id="result-compare-button">
+		<button class="connect">更多会赚钱的小玩意</button>
+		<button class="play">我也要玩</button>
+	</section>
+
+	{{/if}}
+{{/block}}
+
+{{#block ("script")}}
+	qaSDK.{{method}};
+{{/block}}

@@ -1,0 +1,74 @@
+#result-header {
+	margin: 1rem 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.ball {
+		width: 30%;
+		background-color: #fff;
+		border-radius: 50%;
+		border: 2px solid @blue;
+		overflow: hidden;
+	}
+	.container {
+		position: relative;
+		padding: 50% 0;
+		.ball-in {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+		.ball-full {
+			position: absolute;
+			height: 33%;
+			width: 100%;
+			bottom: 0;
+			background: radial-gradient(circle at 40% 20%, @blue, #fff);
+		}
+		.ball-score {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: @red;
+			font-size: 1.2rem;
+		}
+	}
+	.word {
+		margin: .8rem 0 .4rem 0;
+		color: @red;
+		font-size: .88rem;
+	}
+}
+#result-button {
+	margin: .8rem @margin-row;
+	width: 90%;
+	display: flex;
+	.connect419,
+	.connect520,
+	.play,
+	.check {
+		flex: 1;
+		font-size: .88rem;
+		padding: .28rem 0;
+		color: #fff;
+	}
+	.connect419,
+	.play {
+		margin-right: 1rem;
+		background-color: @blue;
+		border: 1px solid @blue;
+	}
+	.connect520,
+	.check {
+		background-color: @red;
+		border: 1px solid @red;
+	}
+}

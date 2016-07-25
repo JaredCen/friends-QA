@@ -1,0 +1,52 @@
+{
+  "apps": [
+    {
+      "name": "activ-qa",
+      "script": "bin/start",
+      "env": {
+        "NODE_ENV": "development",
+        "PORT": 3000,
+        "workers": 1,
+        "appid": "wx22508bb9e7247e39",
+        "appsecret": "1332000d9d9cc0f2d1814ed19a948b8c",
+        "stHost": "//cdn.yeyeapp.in",
+        "redis": {
+          "host": "127.0.0.1",
+          "port": "6379"
+        },
+        "mongodb": {
+          "host": "127.0.0.1",
+          "hostR": "",
+          "port": "27017",
+          "db": "activ-qa",
+          "opts": {
+            "user": "",
+            "pass": "",
+            "server": {
+              "poolSize": 5,
+              "socketOptions": {
+                "keepAlive": 1
+              }
+            },
+            "replset": {
+                "auto_reconnect": true,
+                "socketOptions": {
+                  "keepAlive": 1,
+                  "connectTimeoutMS": 5000
+                },
+                "strategy": "ping",
+                "read_secondary": "true",
+                "readPreference": "nearest",
+                "slaveOk": true,
+                "safe": {
+                  "w": "majority",
+                  "j": 1,
+                  "wtimeout": 10000
+                }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

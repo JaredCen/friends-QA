@@ -1,0 +1,117 @@
+@margin-row: 5%;
+@radius: 5px;
+#ques-header {
+	position: relative;
+	.order {
+		position: relative;
+		margin: .5rem 0;
+		display: flex;
+		z-index: 1;
+	}
+	.container {
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		span {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 1.5rem;
+			width: 1.5rem;
+			border-radius: 50px;
+			border: 2px solid @blue;
+			background-color: #fff;
+			font-size: .88rem;
+			color: @blue;
+		}
+	}
+	.line-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		margin: auto;
+		height: 100%;
+		width: 100%;
+		span {
+			position: relative;
+			height: .15rem;
+			width: 80%;
+			background-color: @blue;
+		}
+	}
+}
+
+.ques-pic {
+	position: relative;
+	display: none;
+	.container {
+		margin: 0 @margin-row;
+		padding-top: 2.538%;
+		margin-bottom: 1rem;
+		position: relative;
+		background-color: @blue;
+		border-radius: @radius;
+		display: flex;
+		flex-direction: column;
+		align-items: center;		
+	}
+	img {
+		width: 94%;
+	}
+	.ques {
+		margin: .5rem 0 .5rem 3%;
+		font-size: .88rem;
+		align-self: flex-start;
+		color: #fff;
+	}
+	.exchange {
+		position: absolute;
+		margin: 2.8rem @margin-row+5%;
+		bottom: 0;
+		right: 0;
+		background-color: #000;
+		color: #fff;
+		border: 2px solid #fff;
+		border-radius: @radius;
+		font-size: .7rem;
+		white-space: nowrap;
+		padding: .24rem .5rem;
+	}
+}
+
+.ans-group {
+	display: none;
+	margin: 0 @margin-row;
+	position: relative;
+	.answer {
+		margin: .4rem 0;
+		padding: .2rem 0;
+		box-sizing: border-box;
+		width: 100%;
+		border: 1px solid @blue;
+		background-color: #fff;
+		border-radius: @radius;
+		display: flex;
+		align-items: center;
+		line-height: 1.5rem;
+		color: @blue;
+		span {
+			font-size: .8rem;
+			margin-left: 3%;		
+		}
+	}
+}
+
+.active {
+	display: block !important;
+}
+
+.selected {
+	background-color: @blue !important;
+	color: #fff !important;
+}
