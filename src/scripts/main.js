@@ -1,7 +1,7 @@
 var qaSDK = {
 	createInit: function (){
 		$('.begin-create').on('tap', function (){
-			window.location.href = "http://" + window.location.host + "/qa/create/begin";
+			window.location.href = "http://" + window.location.host + "/node-scheme/qa/create/begin";
 		});
 	},
 	createBegin: function (question_hidden, url){
@@ -37,7 +37,7 @@ var qaSDK = {
 	},
 	answerInit: function (page_id, url){
 		$('.begin-answer').on('tap', function(){
-			window.location.href = url+"/qa/answer/begin/"+page_id;
+			window.location.href = url+"/node-scheme/qa/answer/begin/"+page_id;
 		});
 	},
 	answerBegin: function (answer_correct, url){
@@ -124,7 +124,7 @@ var qaSDK = {
 
 			$.ajax({
 				type: 'post',
-				url: postUrl+'/qa/create/begin/',
+				url: postUrl+'/node-scheme/qa/create/begin/',
 				data: JSON.stringify(dataJson),
 				contentType: 'application/json',
 				beforeSend: function (xhr, settings){
@@ -133,7 +133,7 @@ var qaSDK = {
 				success: function (data){
 					setTimeout(function (){
 						$('#loading-toast').css('display', 'none');
-						window.location.href = postUrl+'/qa/create/finish/'+JSON.parse(data).page_id;
+						window.location.href = postUrl+'/node-scheme/qa/create/finish/'+JSON.parse(data).page_id;
 					}, 500);
 				},
 				error: function (xhr, type){
