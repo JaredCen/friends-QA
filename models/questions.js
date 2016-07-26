@@ -6,7 +6,7 @@ var QuestionSchema = new Schema({
 	id: String,
 	question: String,
 	img_src: String,
-	sex: String,
+	sex: Number,
 	answer: Array,
     create_at: {type: Date, default: Date.now},
     update_at: {type: Date}
