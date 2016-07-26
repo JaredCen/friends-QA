@@ -7,7 +7,7 @@ var router = require("koa-router")(),
 router.get('/:id', function *(next){
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
-		this.redirect(wechatClient.getAuthorizeURL(encodeURI("https://"+this.request.header.host+"/node-scheme/qa/answer/"+this.params.id), '', 'snsapi_userinfo'));
+		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.request.header.host+"/node-scheme/qa/answer/"+this.params.id), '', 'snsapi_userinfo'));
 	} else if (!this.session.openid && this.query.code){
 		wechatClient.getAccessToken(this.query.code, function(err, result){
 			if (err){

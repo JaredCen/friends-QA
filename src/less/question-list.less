@@ -115,3 +115,27 @@
 	background-color: @blue !important;
 	color: #fff !important;
 }
+.fadein {
+	animation: fadein .5s linear forwards;
+}
+.showin {
+	animation: showin .5s linear infinite;
+}
+@keyframes fadein {
+	0% {
+		opacity: 0;
+		transform: translateX(15rem);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+@keyframes showin {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

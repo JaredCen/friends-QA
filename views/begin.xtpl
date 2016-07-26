@@ -49,7 +49,7 @@
 	{{else}}
 
 		{{#each (question_visible)}}
-		<section class="ques-pic {{#if (xindex === 0)}}active{{/if}}" data-id="{{xindex+1}}" data-sql-id="{{this.id}}">
+		<section class="ques-pic {{#if (xindex === 0)}}active {{else}}fadein{{/if}}" data-id="{{xindex+1}}" data-sql-id="{{this.id}}">
 			<div class="container">
 				<img src="{{this.img_src}}">
 				<span class="ques">{{this.question}}</span>			
@@ -59,7 +59,7 @@
 			</div>
 		</section>
 
-		<section class="ans-group {{#if (xindex === 0)}}active{{/if}}" data-id="{{xindex+1}}" data-sql-id="{{this.id}}">
+		<section class="ans-group {{#if (xindex === 0)}}active {{else}}fadein{{/if}}" data-id="{{xindex+1}}" data-sql-id="{{this.id}}">
 			{{#each (this.answer)}}
 				<div class="answer">
 					<span>{{this}}</span>

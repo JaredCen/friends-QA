@@ -21,6 +21,13 @@ var qaSDK = {
 			var rand = _this.randGenerator(question_hidden);
 			if (rand){
 				// 从数组中取出一组数据并替换到当前题目中
+				$('.ques-pic[data-id="'+thisId+'"]').addClass('showin');
+				$('.ans-group[data-id="'+thisId+'"]').addClass('showin');
+				setTimeout(function (){
+					$('.ques-pic[data-id="'+thisId+'"]').removeClass('showin');
+					$('.ans-group[data-id="'+thisId+'"]').removeClass('showin');					
+				}, 500);
+
 				$('.ques-pic[data-id="'+thisId+'"]').attr('data-sql-id', question_hidden[rand].sqlId);
 				$('.ans-group[data-id="'+thisId+'"]').attr('data-sql-id', question_hidden[rand].sqlId);
 				$('.ques-pic[data-id="'+thisId+'"] img').attr('src', question_hidden[rand].imgSrc);
