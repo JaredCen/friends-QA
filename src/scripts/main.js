@@ -21,8 +21,8 @@ var qaSDK = {
 				$('.ques-pic[data-id="'+thisId+'"]').addClass('showin');
 				$('.ans-group[data-id="'+thisId+'"]').addClass('showin');
 				setTimeout(function (){
-					$('.ques-pic[data-id="'+thisId+'"]').removeClass('showin');
-					$('.ans-group[data-id="'+thisId+'"]').removeClass('showin');					
+					$('.ques-pic[data-id="'+thisId+'"]').removeClass('fadein showin');
+					$('.ans-group[data-id="'+thisId+'"]').removeClass('fadein showin');					
 				}, 500);
 
 				$('.ques-pic[data-id="'+thisId+'"]').attr('data-sql-id', question_hidden[rand].sqlId);
