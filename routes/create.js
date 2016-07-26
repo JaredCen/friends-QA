@@ -31,6 +31,37 @@ router.get('/update', function *(next){
 });
 
 router.get('/', function *(next){
+
+	// 微信授权
+	if (!this.session.openid && !this.query.code){
+		this.redirect(wechatClient.getAuthorizeURL(encodeURI("https://"+this.request.header.host+"/qa/create"), '', 'snsapi_userinfo'));
+	} else if (!this.session.openid && this.query.code){
+		wechatClient.getAccessToken(this.query.code, function(err, result){
+			if (err){
+				console.warn("oauth授权失败！");
+			} else {
+				this.session.oauth_access_token = result.data.access_token;
+				this.session.openid = result.data.openid;
+			}
+		});
+		var UserMsg = yield User.findOne({open_id: this.session.openid});
+		if (UserMsg == ''){
+			var userMsg = {};
+			wechatClient.getUser(this.session.openid, function(err, result){
+				console.log(result);
+				userMsg = {
+					open_id: result.data.openid,
+					sex: result.data.sex,
+					nickname: result.data.nickname,
+					head_img_url: result.data.headimgurl,
+					union_id: result.data.unionid
+				};
+				User.save(userMsg);
+			});
+			Redis.setUserMsg(userMsg);
+		}
+	}
+	
 	yield this.render('init', {
 		isAnswer: false,
 		method: "createInit()"
