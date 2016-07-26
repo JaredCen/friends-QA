@@ -1,4 +1,5 @@
 var router = require("koa-router")(),
+	oauth =require("wechat-oauth"),
 	Question = require('../models/questions.js'),
 	UserQues = require('../models/userQues.js'),
 	redis = require('../config/redis.js'),
@@ -6,7 +7,18 @@ var router = require("koa-router")(),
 	fs = require('fs'),
 	parse = require('co-body');
 
-var	appid = process.env.appid;
+var	appid = process.env.appid,
+	appsecret = process.env.appsecret;
+
+var wechatClient = new oauth(appid, appsecret, function (openid, callback){
+		Redis.getToken(openid).then((token) => {
+			callback(null, token);
+		});
+	}, function (openid, token, callback){
+		Redis.setToken(openid, token).then(callback());
+	});
+
+wechatClient.setOpts({"timeout": 2000});
 
 // 录入问题库脚本
 router.get('/update', function *(next){

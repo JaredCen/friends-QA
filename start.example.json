@@ -5,7 +5,7 @@
       "script": "bin/start",
       "env": {
         "NODE_ENV": "production",
-        "PORT": 3000,
+        "PORT": 3003,
         "workers": 1,
         "appid": "wx22508bb9e7247e39",
         "appsecret": "1332000d9d9cc0f2d1814ed19a948b8c",
