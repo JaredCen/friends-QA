@@ -27,7 +27,7 @@ app.use(session({
 ));
 
 // 挂载静态文件
-app.use(serve(__dirname + '/public'));
+app.use(serve(process.env.stHost || (__dirname + '/public')));
 
 // 注入路由中间件
 app.use(router.routes())
