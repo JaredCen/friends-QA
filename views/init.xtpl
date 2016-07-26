@@ -12,7 +12,7 @@
 {{#block ("body")}}
 	{{#if (isAnswer)}}
 		<section id="visit-header">
-			<img src="/img/welcome.png">
+			<img src="//cdn.yeyeapp.in/node-scheme/public/img/welcome.png">
 		</section>
 
 		{{#if (userList[0].user_img)}}
@@ -35,7 +35,7 @@
 		</section>
 	{{else}}
 		<section id="visit-header">
-			<img src="/img/question.png">
+			<img src="//cdn.yeyeapp.in/node-scheme/public/img/question.png">
 		</section>
 
 		<section id="word">
