@@ -1,7 +1,7 @@
 var router = require("koa-router")(),
 	UserQues = require('../models/userQues.js'),
 	UserAns = require('../models/userAns.js'),
-	redis = require('../config/redis.js'),
+	Redis = require('../config/redis.js'),
 	parse = require('co-body');
 
 router.get('/:id', function *(next){
@@ -26,7 +26,7 @@ router.get('/:id', function *(next){
 					open_id: result.data.openid,
 					sex: result.data.sex,
 					nickname: result.data.nickname,
-					head_img_url: result.data.headimgurl,
+					headimgurl: result.data.headimgurl,
 					union_id: result.data.unionid
 				};
 				User.save(userMsg);
@@ -77,11 +77,11 @@ router.post('/begin/:id', function *(next){
 			correct: userAnsJson.data[i].correct
 		});
 	}
-	var userMsg = redis.getUserMsg(this.session.openid);
+	var userMsg = Redis.getUserMsg(this.session.openid);
 	UserAns.save({
 		open_id: this.session.openid,
 		nickname: userMsg.nickname,
-		head_img_url: userMsg.head_img_url,
+		headimgurl: userMsg.headimgurl,
 		sex: userMsg.sex,
 		page_id: this.params.id,
 		q_a: q_a_array,

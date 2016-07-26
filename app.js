@@ -15,7 +15,6 @@ xtpl(app, {
 
 // redis configs
 var redisConfig = JSON.parse(process.env.redis);
-console.log(redisConfig);
 app.keys = ['yeyejohnshwang'];
 app.use(session({
     store: {

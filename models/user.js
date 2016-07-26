@@ -7,7 +7,10 @@ var UserSchema = new Schema({
     open_id: String,
     sex: Number,
     nickname: String,
-    head_img_url: String,
+    headimgurl: String,
+    city: String,
+    province: String,
+    country: String,
     union_id: String,
     create_at: {type: Date, default: Date.now},
     update_at: {type: Date}

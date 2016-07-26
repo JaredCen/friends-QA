@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var UserQuesSchema = new Schema({
 	open_id: String,
 	nickname: String,
-	head_img_url: String,
+	headimgurl: String,
 	sex: Number,
 	page_id: String,
 	q_a: Array,

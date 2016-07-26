@@ -11,6 +11,7 @@
 	{{{block ("body")}}}
 	<script src="//cdn.yeyeapp.in/node-scheme/public/scripts/common.js"></script>
 	<script>
+		{{{block ("wxConfig")}}}
 		Zepto(function ($){
 			{{{block ("script")}}}
 		});

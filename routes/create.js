@@ -3,10 +3,11 @@ var router = require("koa-router")(),
 	Question = require('../models/questions.js'),
 	UserQues = require('../models/userQues.js'),
 	User = require('../models/user.js'),
-	redis = require('../config/redis.js'),
+	Redis = require('../config/redis.js'),
 	path = require('path'),
 	fs = require('fs'),
-	parse = require('co-body');
+	parse = require('co-body'),
+	plugin = require('../config/plugin.js');
 
 var	appid = process.env.appid,
 	appsecret = process.env.appsecret;
@@ -37,44 +38,52 @@ router.get('/update', function *(next){
 		for (i in data) {
 			Question.save(data[i]);
 		}
-		this.body = "问题录入成功！";
+		console.log("问题录入成功！");
 	}).catch(function (err){
 		console.log(err);
 	});
 });
 
 router.get('/', function *(next){
-
+	// this.session.openid = null;
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
 		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.request.header.host+"/node-scheme/qa/create"), '', 'snsapi_userinfo'));
 	} else if (!this.session.openid && this.query.code){
-		wechatClient.getAccessToken(this.query.code, function(err, result){
-			if (err){
-				console.warn("oauth授权失败！");
-			} else {
-				this.session.oauth_access_token = result.data.access_token;
-				this.session.openid = result.data.openid;
-			}
-		});
+		var code = this.query.code;
+		// yield执行Promise回调赋值，得到resolve/reject的表量而非Promise对象;
+		this.session.openid = yield new Promise(function(resolve, reject) {
+          	wechatClient.getAccessToken(code, function (err, result) {
+              	if (err) {
+                	console.log("oauth授权失败！");
+                	reject(err);
+             	} else {
+                	resolve(result.data.openid);
+              	}
+          	});
+        });
 		var UserMsg = yield User.findOne({open_id: this.session.openid});
-		if (UserMsg == ''){
+		var redisUserMsg = yield Redis.getUserMsg(this.session.openid);
+		if (! UserMsg) {
 			var userMsg = {};
 			wechatClient.getUser(this.session.openid, function(err, result){
-				console.log(result);
 				userMsg = {
-					open_id: result.data.openid,
-					sex: result.data.sex,
-					nickname: result.data.nickname,
-					head_img_url: result.data.headimgurl,
-					union_id: result.data.unionid
+					open_id: result.openid,
+					sex: result.sex,
+					nickname: result.nickname,
+					headimgurl: result.headimgurl,
+			   		city: result.headimgurl,
+				    province: result.province,
+				    country: result.country,
+					union_id: result.unionid
 				};
 				User.save(userMsg);
 			});
-			Redis.setUserMsg(userMsg);
+			Redis.setUserMsg(this.session.openid, userMsg);
+		} else if (UserMsg && !redisUserMsg) {
+			Redis.setUserMsg(this.session.openid, UserMsg);
 		}
 	}
-	
 	yield this.render('init', {
 		isAnswer: false,
 		method: "createInit()"
@@ -117,11 +126,11 @@ router.post('/begin', function *(next){
 			answer: questionArray[0].answer
 		});
 	}
-	var userMsg = redis.getUserMsg(this.session.openid);
+	var userMsg = yield Redis.getUserMsg(this.session.openid);
 	var userQuesObj = {
 		open_id: this.session.openid,
 		nickname: userMsg.nickname,
-		head_img_url: userMsg.head_img_url,
+		headimgurl: userMsg.headimgurl,
 		sex: userMsg.sex,
 		page_id: pageId,
 		q_a: q_a_array
@@ -133,14 +142,16 @@ router.post('/begin', function *(next){
 
 router.get('/finish/:id', function *(next){
 	// 调用微信js-sdk
-	var jsticket = redis.getTicket(appid);
-	var noncestr = Math.random().toString(36).substr(2);
-
+	var userMsg = yield Redis.getUserMsg(this.session.openid);
+ 	var sgObj = yield plugin.getSignature("http://" + this.host + this.url);
+ 	
 	yield this.render('finish', {
+		url: "http://" + this.host + "/node-scheme/qa/answer/" + this.params.id,
+		headimgurl: userMsg.headimgurl,
 		appid: appid,
-		timestamp: Math.floor( +new Date() / 1000),
-		nonceStr: noncestr,
-		signature: jsticket
+		timestamp: sgObj.timestamp,
+		nonceStr: sgObj.noncestr,
+		signature: sgObj.signature
 	});
 });
 
