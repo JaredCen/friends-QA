@@ -91,7 +91,9 @@ router.get('/', function *(next){
 });
 
 router.get('/begin', function *(next){
-	var query = yield Question.find();
+	var userMsg = yield Redis.getUserMsg(this.session.openid);
+	var query = yield Question.find({sex: userMsg.sex});
+	console.log(JSON.stringify(query));
 	var questionVisible = [], questionHidden = [];
 	for (var i=0; i<5; i++) {
 		var rand = Math.floor(Math.random()*(query.length-i));

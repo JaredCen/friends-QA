@@ -26,7 +26,7 @@ var qaSDK = {
 				setTimeout(function (){
 					$('.ques-pic[data-id="'+thisId+'"]').removeClass('fadein showin');
 					$('.ans-group[data-id="'+thisId+'"]').removeClass('fadein showin');					
-				}, 500);
+				}, 800);
 
 				$('.ques-pic[data-id="'+thisId+'"]').attr('data-sql-id', question_hidden[rand].sqlId);
 				$('.ans-group[data-id="'+thisId+'"]').attr('data-sql-id', question_hidden[rand].sqlId);
@@ -40,6 +40,7 @@ var qaSDK = {
 				$(".ans-group > div").on('click', function (){
 					_this.beginAnswerSelect($(this), url, _this, false, null);
 				});
+				question_hidden.splice(rand, 1);
 			} else {
 				console.log('question.length=0');
 			}
@@ -92,7 +93,6 @@ var qaSDK = {
 	},
 	randGenerator: function (array){
 		var rand = Math.floor(Math.random()*array.length);
-		array.splice(rand, 1);
 		if (array.length == 0){
 			return false;
 		} else {
