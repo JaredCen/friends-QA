@@ -34,12 +34,12 @@ app.use(router.routes())
 	.use(router.allowedMethods());
 
 
-router.get('/qa', function *(next){
-	this.redirect('/qa/create');
+router.get('/node-scheme/qa', function *(next){
+	this.redirect('/node-scheme/qa/create');
 });
 
-router.use('/qa/create', create.routes(), create.allowedMethods());
-router.use('/qa/answer', answer.routes(), answer.allowedMethods());
-router.use('/qa/visit', visit.routes(), visit.allowedMethods());
+router.use('/node-scheme/qa/create', create.routes(), create.allowedMethods());
+router.use('/node-scheme/qa/answer', answer.routes(), answer.allowedMethods());
+router.use('/node-scheme/qa/visit', visit.routes(), visit.allowedMethods());
 
 module.exports = app;

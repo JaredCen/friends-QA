@@ -34,7 +34,7 @@ router.get('/', function *(next){
 
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
-		this.redirect(wechatClient.getAuthorizeURL(encodeURI("https://"+this.request.header.host+"/qa/create"), '', 'snsapi_userinfo'));
+		this.redirect(wechatClient.getAuthorizeURL(encodeURI("https://"+this.request.header.host+"/node-scheme/qa/create"), '', 'snsapi_userinfo'));
 	} else if (!this.session.openid && this.query.code){
 		wechatClient.getAccessToken(this.query.code, function(err, result){
 			if (err){
