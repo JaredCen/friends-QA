@@ -33,6 +33,7 @@ router.get('/update', function *(next){
 });
 
 router.get('/', function *(next){
+	this.session.openid = null;
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
 		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.request.header.host+"/node-scheme/qa/create"), '', 'snsapi_userinfo'));
@@ -50,8 +51,25 @@ router.get('/', function *(next){
           	});
         });
 
-		var UserMsg = yield User.findOne({open_id: this.session.openid});
-		if (! UserMsg) {
+		// var UserMsg = yield User.findOne({open_id: this.session.openid});
+		// if (! UserMsg) {
+		// 	var userMsg = {};
+		// 	wechatClient.getUser(this.session.openid, function(err, result){
+		// 		userMsg = {
+		// 			open_id: result.openid,
+		// 			sex: result.sex,
+		// 			nickname: result.nickname,
+		// 			headimgurl: result.headimgurl,
+		// 	   		city: result.headimgurl,
+		// 		    province: result.province,
+		// 		    country: result.country,
+		// 			union_id: result.unionid
+		// 		};
+		// 		User.save(userMsg);
+		// 	});
+		// 	Redis.setUserMsg(this.session.openid, userMsg);
+		// } 
+
 			var userMsg = {};
 			wechatClient.getUser(this.session.openid, function(err, result){
 				userMsg = {
@@ -67,7 +85,6 @@ router.get('/', function *(next){
 				User.save(userMsg);
 			});
 			Redis.setUserMsg(this.session.openid, userMsg);
-		} 
 	}
 
 	var sgObj = yield plugin.getSignature(this);
