@@ -6,7 +6,7 @@
 
 {{#block ('body')}}
 	<section id="visit-header">
-		<img src="//cdn.yeyeapp.in/node-scheme/public/img/question.png" alt="">
+		<img src="http://7xotti.com2.z0.glb.qiniucdn.com/Fk89WE3nrUCjH3TK-zVmGNKshOEk">
 	</section>
 	<section id="finish-button">
 		<button>题目设置完毕<br>邀请好友回答</button>
