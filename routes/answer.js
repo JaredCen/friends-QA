@@ -1,37 +1,62 @@
 var router = require("koa-router")(),
 	UserQues = require('../models/userQues.js'),
 	UserAns = require('../models/userAns.js'),
+	User = require('../models/user.js'),
 	Redis = require('../config/redis.js'),
-	parse = require('co-body');
+	parse = require('co-body'),
+	oauth = require('wechat-oauth');
+
+var	appid = process.env.appid,
+	appsecret = process.env.appsecret;
+
+var wechatClient = new oauth(appid, appsecret, function (openid, callback){
+		Redis.getToken(openid).then((token) => {
+			callback(null, token);
+		});
+	}, function (openid, token, callback){
+		Redis.setToken(openid, token).then(callback());
+	});
+
+wechatClient.setOpts({"timeout": 2000});
 
 router.get('/:id', function *(next){
+	this.session.openid = null;
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
-		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.request.header.host+"/node-scheme/qa/answer/"+this.params.id), '', 'snsapi_userinfo'));
+		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.request.header.host+"/node-scheme/qa/answer/" + this.params.id), '', 'snsapi_userinfo'));
 	} else if (!this.session.openid && this.query.code){
-		wechatClient.getAccessToken(this.query.code, function(err, result){
-			if (err){
-				console.warn("oauth授权失败！");
-			} else {
-				this.session.oauth_access_token = result.data.access_token;
-				this.session.openid = result.data.openid;
-			}
-		});
+		var code = this.query.code;
+		// yield执行Promise回调赋值，得到resolve/reject的表量而非Promise对象;
+		this.session.openid = yield new Promise(function(resolve, reject) {
+          	wechatClient.getAccessToken(code, function (err, result) {
+              	if (err) {
+                	console.log("oauth授权失败！");
+                	reject(err);
+             	} else {
+                	resolve(result.data.openid);
+              	}
+          	});
+        });
 		var UserMsg = yield User.findOne({open_id: this.session.openid});
-		if (UserMsg == ''){
+		var redisUserMsg = yield Redis.getUserMsg(this.session.openid);
+		if (! UserMsg) {
 			var userMsg = {};
 			wechatClient.getUser(this.session.openid, function(err, result){
-				console.log(result);
 				userMsg = {
-					open_id: result.data.openid,
-					sex: result.data.sex,
-					nickname: result.data.nickname,
-					headimgurl: result.data.headimgurl,
-					union_id: result.data.unionid
+					open_id: result.openid,
+					sex: result.sex,
+					nickname: result.nickname,
+					headimgurl: result.headimgurl,
+			   		city: result.headimgurl,
+				    province: result.province,
+				    country: result.country,
+					union_id: result.unionid
 				};
 				User.save(userMsg);
 			});
-			Redis.setUserMsg(userMsg);
+			Redis.setUserMsg(this.session.openid, userMsg);
+		} else if (UserMsg && !redisUserMsg) {
+			Redis.setUserMsg(this.session.openid, UserMsg);
 		}
 	}
 
@@ -42,7 +67,7 @@ router.get('/:id', function *(next){
 	var userAnsList = yield UserAns.find({
 		page_id: this.params.id
 	});
-	if(userAnsMsg == ''){
+	if(! userAnsMsg){
 		yield this.render('init', {
 			isAnswer: true,
 			userList: userAnsList,

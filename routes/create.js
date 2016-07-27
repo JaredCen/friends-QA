@@ -45,7 +45,7 @@ router.get('/update', function *(next){
 });
 
 router.get('/', function *(next){
-	// this.session.openid = null;
+	this.session.openid = null;
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
 		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.request.header.host+"/node-scheme/qa/create"), '', 'snsapi_userinfo'));
@@ -93,7 +93,6 @@ router.get('/', function *(next){
 router.get('/begin', function *(next){
 	var userMsg = yield Redis.getUserMsg(this.session.openid);
 	var query = yield Question.find({sex: userMsg.sex});
-	console.log(JSON.stringify(query));
 	var questionVisible = [], questionHidden = [];
 	for (var i=0; i<5; i++) {
 		var rand = Math.floor(Math.random()*(query.length-i));

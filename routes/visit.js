@@ -23,13 +23,13 @@ wechatClient.setOpts({"timeout": 2000});
 router.get('/:id', function *(next){
 	var userMsg = yield Redis.getUserMsg(this.session.openid);
  	var sgObj = yield plugin.getSignature("http://" + this.host + this.url);
-
+ 	console.log(JSON.stringify(userMsg));
 	// 查询数据库检测是否为出题人
 	var userQuesMsg = yield UserQues.findOne({
 		open_id: this.session.openid,
 		page_id: this.params.id
 	});
-	if (userQuesMsg == ''){
+	if (! userQuesMsg){
 		var userAnsList = yield UserAns.find({page_id: this.params.id});
 		var userAnsMsg = yield UserAns.findOne({
 			page_id: this.params.id,
@@ -69,7 +69,7 @@ router.get('/check/:id', function *(next){
 		open_id: this.session.openid,
 		page_id: this.params.id
 	});
-	if (userQuesMsg == ''){
+	if (! userQuesMsg){
 		var userAnsMsg = yield UserAns.findOne({
 			page_id: this.params.id,
 			open_id: this.session.openid
