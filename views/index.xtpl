@@ -4,12 +4,14 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<link rel="stylesheet" href="//cdn.yeyeapp.in/node-scheme/public/styles/common-962b76816f.min.css">
+	<link rel="stylesheet" href="//cdn.yeyeapp.in/node-scheme/public/styles/common-698c049a68.min.css">
+	{{!-- <link rel="stylesheet" href="//m.yeyeapp.in:3000/styles/common-698c049a68.min.css"> --!}}
 	{{{block ("title")}}}
 </head>
 <body>
 	{{{block ("body")}}}
-	<script src="//cdn.yeyeapp.in/node-scheme/public/scripts/common-9e1a1ea7da.js"></script>
+	<script src="//cdn.yeyeapp.in/node-scheme/public/scripts/common-a7fe118d7c.js"></script>
+	{{!-- <script src="//m.yeyeapp.in:3000/scripts/common-a7fe118d7c.js"></script> --!}}
 	<script>
 		{{{block ("wxConfig")}}}
 		Zepto(function ($){

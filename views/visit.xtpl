@@ -19,8 +19,8 @@
 		<span class="username">{{user_ques_msg.nickname}}</span>
 	</section>
 	<section id="result-button">
-		<button class="connect419">419</button>
-		<button class="connect520">520</button>
+		<button class="connect419">有人想睡你</button>
+		<button class="connect520">有人撩你</button>
 	</section>
 	{{else}}
 	<section id="result-header">
@@ -76,21 +76,34 @@
 	wx.config({
 	    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 	    appId: '{{appid}}', // 必填，公众号的唯一标识
-	    timestamp: {{timestamp}}, // 必填，生成签名的时间戳
-	    nonceStr: '{{nonceStr}}', // 必填，生成签名的随机串
-	    signature: '{{signature}}',// 必填，签名，见附录1
-	    jsApiList: ['onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+	    timestamp: {{sgObj.timestamp}}, // 必填，生成签名的时间戳
+	    nonceStr: '{{sgObj.noncestr}}', // 必填，生成签名的随机串
+	    signature: '{{sgObj.signature}}',// 必填，签名，见附录1
+	    jsApiList: ['onMenuShareAppMessage', 'onMenuShareTimeline'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 	});
 	wx.ready(function (){
 		wx.onMenuShareAppMessage({
-		    title: 'test', // 分享标题
-		    desc: 'test', // 分享描述
+		    title: '朋友圈再大，有人懂我吗？', // 分享标题
+		    desc: '如果你懂我，你会喜欢我...', // 分享描述
 		    link: '{{url}}', // 分享链接
 		    imgUrl: '{{headimgurl}}', // 分享图标
 		    type: 'link', // 分享类型,music、video或link，不填默认为link
 		    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
 		    success: function () { 
 		        // 用户确认分享后执行的回调函数
+		        window.location.href = encodeURI("{{shareUrl}}");
+		    },
+		    cancel: function () { 
+		        // 用户取消分享后执行的回调函数
+		    }
+		});
+		wx.onMenuShareTimeline({
+		    title: '朋友圈再大，有人懂我吗？', // 分享标题
+		    link: '{{url}}', // 分享链接
+		    imgUrl: '{{headimgurl}}', // 分享图标
+		    success: function () { 
+		        // 用户确认分享后执行的回调函数
+		        window.location.href = encodeURI("{{shareUrl}}");
 		    },
 		    cancel: function () { 
 		        // 用户取消分享后执行的回调函数
@@ -103,5 +116,6 @@
 	{{#if (!visit_self)}}
 		var score = "{{user_ans_msg.score}}";
 	{{/if}}
+	var footerUrl = encodeURI("{{footerUrl}}");
 	qaSDK.{{method}};
 {{/block}}

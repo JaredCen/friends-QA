@@ -58,13 +58,15 @@ router.get('/:id', function *(next){
 	var userAnsList = yield UserAns.find({
 		page_id: this.params.id
 	});
-
+	var sgObj = yield plugin.getSignature(this);
 	if(! userAnsMsg && ! userQuesMsg){
 		yield this.render('init', {
 			isAnswer: true,
 			userList: userAnsList,
 			url: "http://"+this.host,
-			method: "answerInit("+this.params.id+", url)"
+			method: "answerInit("+this.params.id+", url)",
+			appid: plugin.appid,
+			sgObj: sgObj
 		});
 	} else {
 		this.redirect("/node-scheme/qa/visit/"+this.params.id);
@@ -72,12 +74,15 @@ router.get('/:id', function *(next){
 });
 
 router.get('/begin/:id', function *(next){
+	var sgObj = yield plugin.getSignature(this);
 	var userQuesMsg = yield UserQues.findOne({page_id: this.params.id});
 	yield this.render('begin', {
 		isAnswer: true,
 		questionMsg: userQuesMsg,
 		url: "http://"+this.host+this.url,
-		method: "answerBegin(url)"
+		method: "answerBegin(url)",
+		appid: plugin.appid,
+		sgObj: sgObj
 	});
 });
 

@@ -40,7 +40,8 @@
 	.play {
 		color: #fff;
 		font-size: .88rem;
-		padding: .4rem 0;
+		height: 2rem;
+		line-height: 2rem;
 		border-radius: @radius;
 	}
 	.connect {
@@ -53,5 +54,15 @@
 		flex: 1;
 		background-color: @blue;
 		border: 1px solid @blue;
+	}
+	.play:active {
+		background-color: @dp-blue;
+		border: 1px solid @dp-blue;
+		color: rgba(0, 0, 0, .1);
+	}
+	.connect:active {
+		background-color: @dp-red;
+		border: 1px solid @dp-red;
+		color: rgba(0, 0, 0, .1);
 	}
 }

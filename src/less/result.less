@@ -57,8 +57,10 @@
 	.check {
 		flex: 1;
 		font-size: .88rem;
-		padding: .28rem 0;
+		height: 2rem;
+		line-height: 2rem;
 		color: #fff;
+		border-radius: @radius;
 	}
 	.connect419,
 	.play {
@@ -70,5 +72,17 @@
 	.check {
 		background-color: @red;
 		border: 1px solid @red;
+	}
+	.connect419:active,
+	.play:active {
+		background-color: @dp-blue;
+		border: 1px solid @dp-blue;
+		color: rgba(0, 0, 0, .1);
+	}
+	.connect520:active,
+	.check:active {
+		background-color: @dp-red;
+		border: 1px solid @dp-red;
+		color: rgba(0, 0, 0, .1);
 	}
 }

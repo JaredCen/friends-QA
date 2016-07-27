@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>夜夜—城市夜间电商</title>
+	<style>
+	html {
+		font-size: 70px;
+	}
+	#qrcode {
+  	  font-size: .2rem;
+	}
+	#qrcode .qrcode-first-part {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  margin: .2rem;
+	}
+	#qrcode .qrcode-first-part img {
+	  width: .68rem;
+	  height: .68rem;
+	  border-radius: 50%;
+	}
+	#qrcode .qrcode-first-part .logo-text {
+	  font-size: .24rem;
+	  padding: .1rem;
+	  color: #232323;
+	  font-weight: 600;
+	}
+	#qrcode .qrcode-first-part .text {
+	  padding-top: .05rem;
+	  font-size: .2rem;
+	  color: rgba(0, 0, 0, 0.5);
+	}
+	#qrcode .qrcode-second-part {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  text-align: center;
+	}
+	#qrcode .first-text,
+	#qrcode .second-text {
+	  margin-top: .2rem;
+	  line-height: .3rem;
+	  color: rgba(0, 0, 0, 0.5);
+	}
+	#qrcode .second-text {
+	  margin: .1rem 0;
+	}
+	#qrcode #qrcode {
+	  position: relative;
+	  padding: 0 25%;
+	  padding-bottom: .2rem;
+	  width: 50%;
+	}
+	#qrcode .qrcode-third-part {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  text-align: center;
+	}
+	#qrcode .download-button {
+	  display: block;
+	  color: #fff;
+	  text-align: center;
+	  text-decoration: none;
+	  border-radius: 5px;
+	  margin: .2rem;
+	  position: relative;
+	  font-size: .22rem;
+	  background-color: #04BE02;
+	  width: 80%;
+	  padding: .1rem 0;
+	  line-height: .3rem;
+	}
+	#qrcode .download-button:after {
+	  content: " ";
+	  width: 200%;
+	  height: 200%;
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  border: 1px solid rgba(0, 0, 0, 0.2);
+	  border-radius: 10px;
+	  transform: scale(0.5);
+	  transform-origin: 0 0;
+	  box-sizing: border-box;
+	}
+	#qrcode .download-button:active {
+	  color: rgba(255, 255, 255, 0.4);
+	  background-color: #039702;
+	}
+	#qrcode .ad-button {
+	  font-size: .2rem;
+	  margin-bottom: .2rem;
+	  color: rgba(0, 0, 0, 0.4);
+	}
+	.cross {
+		width: 100%;
+		height: .1rem;
+		background-color: rgba(0, 0, 0, .1);
+	}
+	</style>
+</head>
+<body>
+	<section id="qrcode">
+		<div class="qrcode-first-part">
+			<img src="//cdn.yeyeapp.in/node-scheme/public/img/logo.png" alt="logo">
+			<span class="logo-text">EveryCity EveryNight</span>
+			<span class="text">专注夜间娱乐</span>
+			<span class="text">派对交友，娱乐资讯，酒吧订台</span>			
+		</div>
+		<div class="cross"></div>
+		<div class="qrcode-second-part">
+			<span class="first-text">关注 &lceil; <strong>夜夜APP</strong>&rfloor; 实时查看好友有多懂你</span>
+			<span class="second-text">长按识别，公众号：yeye_app</span>			
+		</div>
+		<img id="qrcode" src="http://7xotti.com2.z0.glb.qiniucdn.com/FmtkzlIy7340Mx7wRhI2fZMbBLow" alt="qrcode">
+		<div class="cross"></div>
+		<div class="qrcode-third-part">
+			<a class="download-button" href="http://a.app.qq.com/o/simple.jsp?pkgname=in.yeyeapp">
+				夜夜带你玩转夜生活 · 点击<strong>下载</strong>
+			</a>			
+		</div>
+	</section>
+</body>
+</html>

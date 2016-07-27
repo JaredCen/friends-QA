@@ -3,7 +3,8 @@ var crypto = require('crypto'),
 	Redis = require('./redis.js');
 
 var plugin = {
-	getSignature: function *(url){
+	getSignature: function *(that){
+		var url = "http://" + that.host + that.url;
 		var _this = this;
 		var stringSign = {
 			jsapi_ticket: yield Redis.getTicket(_this.appid),

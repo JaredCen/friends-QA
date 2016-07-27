@@ -60,9 +60,11 @@ var qaSDK = {
 			_this.beginAnswerSelect($(this), url, _this, true);
 		});
 	},
-	visitOther: function (score){
+	visitOther: function (score, url){
+		$('#footer button').on('tap', function (){
+			window.location.href = url;
+		});
 		$('.ball-full').css('height', score + '%');
-		this.footerEvent();
 		$('.play').on('tap', function (){
 			window.location.href = window.location.href.split("/visit/")[0]+"/create";
 		});
@@ -70,13 +72,15 @@ var qaSDK = {
 			window.location.href = window.location.href.split("/visit/")[0]+"/visit/check/"+window.location.href.split("/visit/")[1];
 		});
 	},
-	visitSelf: function (){
-		this.footerEvent();
+	visitSelf: function (url){
+		$('#footer button').on('tap', function (){
+			window.location.href = url;
+		});
 		$('.connect419').on('tap', function (){
-			alert("connect to 419!");
+			window.location.href = "http://m.yeyeapp.in/scheme/moments/redpack/create-timeline/3";
 		});
 		$('.connect520').on('tap', function (){
-			alert("connect to 520!");
+			window.location.href = "http://m.yeyeapp.in/scheme/friends-exposes/visit/1152998";
 		});
 
 		$('.remind').on('tap', function (){
@@ -87,12 +91,26 @@ var qaSDK = {
 			window.location.href = window.location.href.split("/visit/")[0]+"/visit/check/"+window.location.href.split("/visit/")[1]+"?open_id="+$(this).attr('data-openid');
 		});
 	},
-	check: function (){
+	check: function (url){
 		$('.connect').on('tap', function (){
-			alert("connect to other place!");
+			window.location.href = url;
 		});
 		$('.play').on('tap', function (){
 			window.location.href = window.location.href.split("/visit/")[0]+"/create";
+		});
+	},
+	more: function (){
+		$('.proj-0').on('tap', function (){
+			window.location.href = "http://m.yeyeapp.in/scheme/friends-exposes/visit/1152998";
+		});
+		$('.proj-1').on('tap', function (){
+			window.location.href = "http://m.yeyeapp.in/scheme/moments/redpack/create-timeline/3";
+		});
+		$('.proj-2').on('tap', function (){
+			window.location.href = "http://m.yeyeapp.in/node/care/care-index?upid=5798929f70cc9bda5ebd751a";
+		});
+		$('.proj-3').on('tap', function (){
+			window.location.href = "http://m.yeyeapp.in/scheme/friends-memory/visit/7442";
 		});
 	},
 	randGenerator: function (array){
@@ -185,10 +203,5 @@ var qaSDK = {
 				}
 			});	
 		}
-	},
-	footerEvent: function (){
-		$('#footer button').on('tap', function (){
-			alert("more!");
-		});
 	}
 };

@@ -70,9 +70,12 @@ router.get('/', function *(next){
 		} 
 	}
 
+	var sgObj = yield plugin.getSignature(this);
 	yield this.render('init', {
 		isAnswer: false,
-		method: "createInit()"
+		method: "createInit()",
+		appid: plugin.appid,
+		sgObj: sgObj
 	});
 });
 
@@ -88,12 +91,15 @@ router.get('/begin', function *(next){
 	for (j in query) {
 		questionHidden.push(query[j]);
 	}	
+	var sgObj = yield plugin.getSignature(this);
 	yield this.render('begin', {
 		isAnswer: false,
 		question_visible: questionVisible,
 		question_hidden: questionHidden,
 		url: "http://"+this.host,
-		method: "createBegin(questionHidden, url)"
+		method: "createBegin(questionHidden, url)",
+		appid: plugin.appid,
+		sgObj: sgObj
 	});
 });
 
@@ -128,17 +134,16 @@ router.post('/begin', function *(next){
 });
 
 router.get('/finish/:id', function *(next){
-	// 调用微信js-sdk
 	var userMsg = yield Redis.getUserMsg(this.session.openid);
- 	var sgObj = yield plugin.getSignature("http://" + this.host + this.url);
+	// 调用微信js-sdk
+ 	var sgObj = yield plugin.getSignature(this);
  	
 	yield this.render('finish', {
 		url: "http://" + this.host + "/node-scheme/qa/answer/" + this.params.id,
+		shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
 		headimgurl: userMsg.headimgurl,
 		appid: plugin.appid,
-		timestamp: sgObj.timestamp,
-		nonceStr: sgObj.noncestr,
-		signature: sgObj.signature
+		sgObj: sgObj
 	});
 });
 

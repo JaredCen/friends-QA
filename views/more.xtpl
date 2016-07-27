@@ -1,0 +1,29 @@
+{{extend ('./index.xtpl')}}
+
+{{#block ('title')}}
+	<title>会赚钱的小游戏</title>
+{{/block}}
+
+{{#block ('body')}}
+	<section id="proj-list-title">
+		<img src="http://7xotti.com2.z0.glb.qiniucdn.com/Fhahd5-Q0Kr6H2mOq0CSwz2AsQqD">
+	</section>
+	<section id="proj-list-content">
+		{{#each (word)}}
+		<div class="proj proj-{{xindex}}">
+			<div class="left {{this.color}}">
+				<span class="word">{{this.main}}</span>
+			</div>
+			<div class="middle">
+				<span>{{this.title}}</span>
+				<span>{{this.count}}万+人在玩</span>
+			</div>
+			<button>马上赚钱</button>
+		</div>
+		{{/each}}
+	</section>
+{{/block}}
+
+{{#block ("script")}}
+	qaSDK.{{method}};
+{{/block}}
