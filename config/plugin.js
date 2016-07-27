@@ -1,12 +1,12 @@
 var crypto = require('crypto'),
+	oauth = require('wechat-oauth'),
 	Redis = require('./redis.js');
-
-var appid = process.env.appid;
 
 var plugin = {
 	getSignature: function *(url){
+		var _this = this;
 		var stringSign = {
-			jsapi_ticket: yield Redis.getTicket(appid),
+			jsapi_ticket: yield Redis.getTicket(_this.appid),
 			noncestr: Math.random().toString(36).substr(2),
 			timestamp: Math.floor(+new Date() / 1000),
 			url: url
@@ -23,7 +23,21 @@ var plugin = {
 	    	signature: sha1.digest('hex')
 	    }
 	    return sgObj;
-	}
+	},
+	wechatOauthInit: function (){
+		var _this = this;
+		var wechatClient = new oauth(_this.appid, _this.appsecret, function (openid, callback){
+				Redis.getToken(openid).then((token) => {
+					callback(null, token);
+				});
+			}, function (openid, token, callback){
+				Redis.setToken(openid, token).then(callback());
+			});
+		wechatClient.setOpts({"timeout": 2000});
+		return wechatClient;
+	},
+	appid: process.env.appid,
+	appsecret: process.env.appsecret
 }
 
 module.exports = plugin;

@@ -9,7 +9,7 @@ var UserAnsSchema = new Schema({
 	sex: Number,
 	page_id: String,
 	q_a: Array,
-	score: String,
+	score: Number,
 	evaluation: String,
     create_at: {type: Date, default: Date.now},
     update_at: {type: Date}

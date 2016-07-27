@@ -1,29 +1,13 @@
 var router = require("koa-router")(),
-	oauth =require("wechat-oauth"),
 	User = require("../models/user.js"),
 	UserQues = require("../models/userQues.js"),
 	UserAns = require("../models/userAns.js"),
 	Redis = require("../config/redis.js"),
 	plugin = require('../config/plugin.js');
 
-var	appid = process.env.appid,
-	appsecret = process.env.appsecret;
-
-var wechatClient = new oauth(appid, appsecret, function (openid, callback){
-		Redis.getToken(openid).then((token) => {
-			callback(null, token);
-		});
-	}, function (openid, token, callback){
-		Redis.setToken(openid, token).then(callback());
-	});
-
-wechatClient.setOpts({"timeout": 2000});
-
-
 router.get('/:id', function *(next){
 	var userMsg = yield Redis.getUserMsg(this.session.openid);
  	var sgObj = yield plugin.getSignature("http://" + this.host + this.url);
- 	console.log(JSON.stringify(userMsg));
 	// 查询数据库检测是否为出题人
 	var userQuesMsg = yield UserQues.findOne({
 		open_id: this.session.openid,
@@ -39,10 +23,10 @@ router.get('/:id', function *(next){
 			visit_self: false,
 			user_ans_msg: userAnsMsg,
 			user_ans_list: userAnsList,
-			method: "visitOther()",
+			method: "visitOther(score)",
 			url: "http://" + this.host + "/node-scheme/qa/answer/" + this.params.id,
 			headimgurl: userMsg.headimgurl,
-			appid: appid,
+			appid: plugin.appid,
 			timestamp: sgObj.timestamp,
 			nonceStr: sgObj.noncestr,
 			signature: sgObj.signature
@@ -56,7 +40,7 @@ router.get('/:id', function *(next){
 			method: "visitSelf()",
 			url: "http://" + this.host + "/node-scheme/qa/answer/" + this.params.id,
 			headimgurl: userMsg.headimgurl,
-			appid: appid,
+			appid: plugin.appid,
 			timestamp: sgObj.timestamp,
 			nonceStr: sgObj.noncestr,
 			signature: sgObj.signature

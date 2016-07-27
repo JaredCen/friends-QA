@@ -13,36 +13,37 @@ var qaSDK = {
 		var _this = this;
 
 		$(".ans-group > div").on('tap', function (){
-			_this.beginAnswerSelect($(this), url, _this, false, null);
+			_this.beginAnswerSelect($(this), url, _this, false);
 		});
 
+		var question_array = question_hidden;
 		$('.exchange').on('tap', function (){
 			var thisId = parseInt($(this).parent().attr('data-id'));
-			var rand = _this.randGenerator(question_hidden);
-			if (rand){
+			var rand = _this.randGenerator(question_array);
+			if (rand === false){
+				question_array = question_hidden;
+			} else {
 				// 从数组中取出一组数据并替换到当前题目中
 				$('.ques-pic[data-id="'+thisId+'"]').addClass('showin');
 				$('.ans-group[data-id="'+thisId+'"]').addClass('showin');
 				setTimeout(function (){
 					$('.ques-pic[data-id="'+thisId+'"]').removeClass('fadein showin');
 					$('.ans-group[data-id="'+thisId+'"]').removeClass('fadein showin');					
-				}, 800);
+				}, 700);
 
-				$('.ques-pic[data-id="'+thisId+'"]').attr('data-sql-id', question_hidden[rand].sqlId);
-				$('.ans-group[data-id="'+thisId+'"]').attr('data-sql-id', question_hidden[rand].sqlId);
-				$('.ques-pic[data-id="'+thisId+'"] img').attr('src', question_hidden[rand].imgSrc);
-				$('.ques-pic[data-id="'+thisId+'"] .ques').html(question_hidden[rand].question);
+				$('.ques-pic[data-id="'+thisId+'"]').attr('data-sql-id', question_array[rand].sqlId);
+				$('.ans-group[data-id="'+thisId+'"]').attr('data-sql-id', question_array[rand].sqlId);
+				$('.ques-pic[data-id="'+thisId+'"] img').attr('src', question_array[rand].imgSrc);
+				$('.ques-pic[data-id="'+thisId+'"] .ques').html(question_array[rand].question);
 				$('.ans-group[data-id="'+thisId+'"] .answer').remove();
-				for (i in question_hidden[rand].answer){
-					$('.ans-group[data-id="'+thisId+'"]').append('<div class="answer"><span>'+question_hidden[rand].answer[i]+'</span></div>');
+				for (i in question_array[rand].answer){
+					$('.ans-group[data-id="'+thisId+'"]').append('<div class="answer"><span>'+question_array[rand].answer[i]+'</span></div>');
 				}
 				$(".ans-group > div").off();
 				$(".ans-group > div").on('click', function (){
-					_this.beginAnswerSelect($(this), url, _this, false, null);
+					_this.beginAnswerSelect($(this), url, _this, false);
 				});
-				question_hidden.splice(rand, 1);
-			} else {
-				console.log('question.length=0');
+				question_array.splice(rand, 1);
 			}
 		});
 	},
@@ -51,13 +52,14 @@ var qaSDK = {
 			window.location.href = url+"/node-scheme/qa/answer/begin/"+page_id;
 		});
 	},
-	answerBegin: function (answer_correct, url){
+	answerBegin: function (url){
 		var _this = this;
 		$(".ans-group > div").on('tap', function (){
-			_this.beginAnswerSelect($(this), url, _this, true, answer_correct);
+			_this.beginAnswerSelect($(this), url, _this, true);
 		});
 	},
-	visitOther: function (){
+	visitOther: function (score){
+		$('.ball-full').css('height', score + '%');
 		this.footerEvent();
 		$('.play').on('tap', function (){
 			window.location.href = window.location.href.split("/visit/")[0]+"/create";
@@ -100,7 +102,7 @@ var qaSDK = {
 		}
 	},
 	storeQuestion: [],
-	beginAnswerSelect: function (objSelector, postUrl, obj, isAnswer, correctAnswer){
+	beginAnswerSelect: function (objSelector, postUrl, obj, isAnswer){
 		$('.ans-group .selected').removeClass('selected');
 		objSelector.addClass('selected');
 
@@ -125,13 +127,11 @@ var qaSDK = {
 		}
 
 		if(thisId == 5 && !isAnswer){
-			// 题目设置完毕
 			var dataJson = {};
-			for (var i=0; i<5; i++){
+			for(var i=0; i<5; i++){
 				dataJson[i] = obj.storeQuestion[i];
 			}
 			obj.storeQuestion = [];
-
 			$.ajax({
 				type: 'post',
 				url: postUrl+'/node-scheme/qa/create/begin/',
@@ -157,26 +157,14 @@ var qaSDK = {
 
 		if(thisId == 5 && isAnswer){
 			var dataJson = {};
-			for (var i=0; i<5; i++){
-				obj.storeQuestion[i].answerCorrect = correctAnswer[i].answerCorrect;
-				obj.storeQuestion[i].score = "50%";
-				if (obj.storeQuestion[i].answer == correctAnswer[i].answerCorrect){
-					obj.storeQuestion[i].correct = true;
-				} else {
-					obj.storeQuestion[i].correct = false;
-				}
+			for(var i=0; i<5; i++){
 				dataJson[i] = obj.storeQuestion[i];
 			}
 			obj.storeQuestion = [];
-
 			$.ajax({
 				type: 'post',
 				url: postUrl,
-				data: JSON.stringify({
-					score: "59%",
-					evaluation: "dddd",
-					data: dataJson
-				}),
+				data: JSON.stringify(dataJson),
 				contentType: 'application/json',
 				beforeSend: function (xhr, settings){
 					$('#loading-toast').css('display', 'block');
@@ -193,7 +181,7 @@ var qaSDK = {
 						alert('数据上传失败');
 					}, 500);
 				}
-			});		
+			});	
 		}
 	},
 	footerEvent: function (){

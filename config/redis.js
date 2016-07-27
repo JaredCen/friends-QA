@@ -76,7 +76,6 @@ RedisOP.prototype.setUserMsg = function (openid, obj){
         if (err){
             console.warn(err);           
         } else {
-            console.log("ss");
             redisClient.expire(appid + openid + "_user_msg", 2 * 24 * 60 * 60);
         }
     });
@@ -86,19 +85,15 @@ RedisOP.prototype.getUserMsg = function (openid){
     return new Promise((resolve, reject) => {
         redisClient.get(appid + openid + "_user_msg", function (err, data){
             var user = JSON.parse(data);
-            if (err) {
-                console.log(err);
-                reject(err);
-            // }
-            //  else if (user) {
-            //     resolve(data);
-            } else {
+            if (! user) {
                 User.findOne({open_id: openid}).then((userMsg) => {
                     redisClient.set(appid + openid + "_user_msg", JSON.stringify(userMsg), function (err){
                         redisClient.expire(appid + openid + "_user_msg", 2 * 24 * 60 * 60);
                     });
                     resolve(userMsg);
                 });
+            } else {
+                resolve(user);             
             }
         });
     });

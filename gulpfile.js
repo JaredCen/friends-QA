@@ -5,7 +5,10 @@ var gulp = require('gulp'),
 	minifycss = require('gulp-minify-css'),
 	connect = require('gulp-connect'),
 	livereload = require('gulp-livereload'),
-	uglify = require('gulp-uglify');
+	uglify = require('gulp-uglify'),
+	clean = require('gulp-clean'),
+	rev = require('gulp-rev'),
+	revCollector = require('gulp-rev-collector');
 
 var browserify = require('browserify'),
 	source = require('vinyl-source-stream'),
@@ -14,8 +17,13 @@ var browserify = require('browserify'),
 	babelify = require('babelify'),
 	watchify = require('watchify');
 
+gulp.task('clean', function(){
+	return gulp.src(['public/scripts/*.js', 'public/styles/*.css'])
+		.pipe(clean());
+});
+
 gulp.task('less', function() {
-	gulp.src(['src/less/*.less', 'public/lib/normalize.css'])
+    return gulp.src(['src/less/*.less', 'public/lib/normalize.css'])
 		.pipe(concat('common.min.less'))
 		.pipe(less())
 		.pipe(autoprefixer({
@@ -24,7 +32,10 @@ gulp.task('less', function() {
 			remove: true,
 		}))
 		.pipe(minifycss())
+		.pipe(rev())
 		.pipe(gulp.dest('public/styles'))
+		.pipe(rev.manifest())
+		.pipe(gulp.dest('src/rev/styles'))
 		.pipe(livereload());
 });
 
@@ -55,7 +66,11 @@ gulp.task('less', function() {
 gulp.task('build-js', function (){
 	return gulp.src(['./public/lib/zepto.min.js', './src/scripts/*.js'])
 		.pipe(concat('common.js'))
-		.pipe(gulp.dest('./public/scripts'));
+		.pipe(rev())
+		.pipe(gulp.dest('./public/scripts'))
+		.pipe(rev.manifest())
+		.pipe(gulp.dest('src/rev/scripts'))
+		.pipe(livereload());
 });
 
 gulp.task('connect', function() {
@@ -70,15 +85,23 @@ gulp.task('watch-html', function() {
 		.pipe(livereload());
 });
 
+gulp.task('rev', function (){
+	return gulp.src(['src/rev/**/*.json', 'src/xtpl/index.xtpl'])
+		.pipe(revCollector({
+			replaceReved: true
+		}))
+		.pipe(gulp.dest('views'));
+});
+
 gulp.task('watch', function() {
 	livereload.listen();
-	gulp.watch('src/less/*.less', ['less']);
+	gulp.watch('src/less/*.less', ['less', 'rev']);
 	gulp.watch('src/html/*.html', ['watch-html']);
-	gulp.watch('src/scripts/*.js', ['build-js']);
+	gulp.watch('src/scripts/*.js', ['build-js', 'rev']);
 	// b.plugin(watchify)
 	// 	.on('update', function(ids){
 	// 		gulp.start('build-js');
 	// 	});
 });
 
-gulp.task('default', ['less', 'build-js', 'connect', 'watch']);
+gulp.task('default', ['clean','less', 'build-js', 'connect', 'rev', 'watch']);

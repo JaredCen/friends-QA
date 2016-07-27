@@ -29,7 +29,7 @@
 				<div class="ball-in">
 					<div class="ball-full"></div>
 					<div class="ball-score">
-						<span>{{user_ans_msg.score}}</span>
+						<span>{{user_ans_msg.score}}%</span>
 					</div>
 				</div>
 			</div>
@@ -61,7 +61,7 @@
 				<span class="username">{{this.nickname}}</span>
 				<span class="word">{{this.evaluation}}</span>
 			</span>
-			<span class="score">{{this.score}}</span>
+			<span class="score">{{this.score}}%</span>
 		</div>
 		{{/each}}
 	</section>
@@ -100,5 +100,8 @@
 {{/block}}
 
 {{#block ("script")}}
+	{{#if (!visit_self)}}
+		var score = "{{user_ans_msg.score}}";
+	{{/if}}
 	qaSDK.{{method}};
 {{/block}}

@@ -1,5 +1,4 @@
 var router = require("koa-router")(),
-	oauth =require("wechat-oauth"),
 	Question = require('../models/questions.js'),
 	UserQues = require('../models/userQues.js'),
 	User = require('../models/user.js'),
@@ -9,18 +8,7 @@ var router = require("koa-router")(),
 	parse = require('co-body'),
 	plugin = require('../config/plugin.js');
 
-var	appid = process.env.appid,
-	appsecret = process.env.appsecret;
-
-var wechatClient = new oauth(appid, appsecret, function (openid, callback){
-		Redis.getToken(openid).then((token) => {
-			callback(null, token);
-		});
-	}, function (openid, token, callback){
-		Redis.setToken(openid, token).then(callback());
-	});
-
-wechatClient.setOpts({"timeout": 2000});
+var wechatClient =  plugin.wechatOauthInit();
 
 // 录入问题库脚本
 router.get('/update', function *(next){
@@ -45,7 +33,6 @@ router.get('/update', function *(next){
 });
 
 router.get('/', function *(next){
-	this.session.openid = null;
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
 		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.request.header.host+"/node-scheme/qa/create"), '', 'snsapi_userinfo'));
@@ -62,8 +49,8 @@ router.get('/', function *(next){
               	}
           	});
         });
+
 		var UserMsg = yield User.findOne({open_id: this.session.openid});
-		var redisUserMsg = yield Redis.getUserMsg(this.session.openid);
 		if (! UserMsg) {
 			var userMsg = {};
 			wechatClient.getUser(this.session.openid, function(err, result){
@@ -80,10 +67,9 @@ router.get('/', function *(next){
 				User.save(userMsg);
 			});
 			Redis.setUserMsg(this.session.openid, userMsg);
-		} else if (UserMsg && !redisUserMsg) {
-			Redis.setUserMsg(this.session.openid, UserMsg);
-		}
+		} 
 	}
+
 	yield this.render('init', {
 		isAnswer: false,
 		method: "createInit()"
@@ -95,7 +81,7 @@ router.get('/begin', function *(next){
 	var query = yield Question.find({sex: userMsg.sex});
 	var questionVisible = [], questionHidden = [];
 	for (var i=0; i<5; i++) {
-		var rand = Math.floor(Math.random()*(query.length-i));
+		var rand = Math.floor(Math.random()*query.length);
 		questionVisible.push(query[rand]);
 		query.splice(rand, 1);
 	}
@@ -113,18 +99,18 @@ router.get('/begin', function *(next){
 
 router.post('/begin', function *(next){
 	var userQuesJson = yield parse.json(this);
+	// console.log(userQuesJson);
 	var userQuesMsg = yield UserQues.find();
 	var q_a_array = [];
 	var pageId = userQuesMsg.length+1;
 	for (var i=0; i<5; i++){
-		var questionArray = yield Question.find({id: userQuesJson[i].sqlId});
-		// console.log(userQuesJson);
+		var questionArray = yield Question.findOne({id: userQuesJson[i].sqlId});
 		q_a_array.push({
 			sql_id: userQuesJson[i].sqlId,
 			question: userQuesJson[i].question,
 			answer_correct: userQuesJson[i].answer,
-			img_src: questionArray[0].img_src,
-			answer: questionArray[0].answer
+			img_src: questionArray.img_src,
+			answer: questionArray.answer
 		});
 	}
 	var userMsg = yield Redis.getUserMsg(this.session.openid);
@@ -149,7 +135,7 @@ router.get('/finish/:id', function *(next){
 	yield this.render('finish', {
 		url: "http://" + this.host + "/node-scheme/qa/answer/" + this.params.id,
 		headimgurl: userMsg.headimgurl,
-		appid: appid,
+		appid: plugin.appid,
 		timestamp: sgObj.timestamp,
 		nonceStr: sgObj.noncestr,
 		signature: sgObj.signature

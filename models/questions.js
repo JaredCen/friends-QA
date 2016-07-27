@@ -23,6 +23,10 @@ QuestionDAO.prototype.find = function (obj){
 	return QuestionModel.find(obj).exec();
 }
 
+QuestionDAO.prototype.findOne = function (obj){
+	return QuestionModel.findOne(obj).exec();
+}
+
 QuestionDAO.prototype.delete = function (obj){
 	return QuestionModel.remove(obj);
 }

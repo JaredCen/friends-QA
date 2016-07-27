@@ -76,14 +76,7 @@
 
 {{#block ("script")}}
 	{{#if (isAnswer)}}
-		var answerCorrect = [], url = encodeURI('{{url}}');
-		{{#each (questionMsg.q_a)}}
-			answerCorrect.push({
-				sqlId: {{this.sql_id}},
-				question: "{{this.question}}",
-				answerCorrect: "{{this.answer_correct}}"
-			});
-		{{/each}}
+		var url = encodeURI('{{url}}');
 	{{else}}
 		var questionHidden = [], url = encodeURI('{{url}}');
 		{{#each (question_hidden)}}

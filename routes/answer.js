@@ -4,23 +4,11 @@ var router = require("koa-router")(),
 	User = require('../models/user.js'),
 	Redis = require('../config/redis.js'),
 	parse = require('co-body'),
-	oauth = require('wechat-oauth');
+	plugin = require('../config/plugin.js');
 
-var	appid = process.env.appid,
-	appsecret = process.env.appsecret;
-
-var wechatClient = new oauth(appid, appsecret, function (openid, callback){
-		Redis.getToken(openid).then((token) => {
-			callback(null, token);
-		});
-	}, function (openid, token, callback){
-		Redis.setToken(openid, token).then(callback());
-	});
-
-wechatClient.setOpts({"timeout": 2000});
+var wechatClient =  plugin.wechatOauthInit();
 
 router.get('/:id', function *(next){
-	this.session.openid = null;
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
 		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.request.header.host+"/node-scheme/qa/answer/" + this.params.id), '', 'snsapi_userinfo'));
@@ -37,8 +25,8 @@ router.get('/:id', function *(next){
               	}
           	});
         });
+
 		var UserMsg = yield User.findOne({open_id: this.session.openid});
-		var redisUserMsg = yield Redis.getUserMsg(this.session.openid);
 		if (! UserMsg) {
 			var userMsg = {};
 			wechatClient.getUser(this.session.openid, function(err, result){
@@ -55,11 +43,14 @@ router.get('/:id', function *(next){
 				User.save(userMsg);
 			});
 			Redis.setUserMsg(this.session.openid, userMsg);
-		} else if (UserMsg && !redisUserMsg) {
-			Redis.setUserMsg(this.session.openid, UserMsg);
 		}
 	}
 
+	// 查询数据库检测是否为出题人
+	var userQuesMsg = yield UserQues.findOne({
+		open_id: this.session.openid,
+		page_id: this.params.id
+	});
 	var userAnsMsg = yield UserAns.findOne({
 		page_id: this.params.id,
 		open_id: this.session.openid
@@ -67,7 +58,8 @@ router.get('/:id', function *(next){
 	var userAnsList = yield UserAns.find({
 		page_id: this.params.id
 	});
-	if(! userAnsMsg){
+
+	if(! userAnsMsg && ! userQuesMsg){
 		yield this.render('init', {
 			isAnswer: true,
 			userList: userAnsList,
@@ -85,34 +77,64 @@ router.get('/begin/:id', function *(next){
 		isAnswer: true,
 		questionMsg: userQuesMsg,
 		url: "http://"+this.host+this.url,
-		method: "answerBegin(answerCorrect, url)"
+		method: "answerBegin(url)"
 	});
 });
 
 router.post('/begin/:id', function *(next){
 	var userAnsJson = yield parse.json(this);
-	// console.log(userAnsJson);
-	var q_a_array = [];
-	for (var i=0; i<5; i++){
-		q_a_array.push({
-			sql_id: userAnsJson.data[i].sqlId,
-			question: userAnsJson.data[i].question,
-			answer_select: userAnsJson.data[i].answer,
-			answer_correct: userAnsJson.data[i].answerCorrect,
-			correct: userAnsJson.data[i].correct
+	var userAnsRecord = yield UserAns.findOne({
+		open_id: this.session.openid,
+		page_id: this.params.id
+	});
+	if (! userAnsRecord) {
+		var userQuesMsg = yield UserQues.findOne({page_id: this.params.id});
+		var userMsg = yield Redis.getUserMsg(this.session.openid);
+		var q_a_array = [], correct, correctCount = 0, allCount = 0, score, evaluation;
+		for (var i=0; i<5; i++) {
+			allCount = allCount + parseInt(userQuesMsg.q_a[i].answer.length);
+			if (userAnsJson[i].answer == userQuesMsg.q_a[i].answer_correct) {
+				correctCount = correctCount + parseInt(userQuesMsg.q_a[i].answer.length);
+				correct = true;
+			} else {
+				correct = false;
+			}
+
+			q_a_array.push({
+				sql_id: userAnsJson[i].sqlId,
+				question: userAnsJson[i].question,
+				answer_select: userAnsJson[i].answer,
+				answer_correct: userQuesMsg.q_a[i].answer_correct,
+				correct: correct
+			});
+		}
+		score = Math.floor(correctCount / allCount * 100);
+		if (score >= 0 && score < 20) {
+			evaluation = "呵呵，发个红包吧，不然拉黑！";
+		} else if (score >= 20 && score <40) {
+			evaluation = "为了友谊长存记得查看答案";
+		} else if (score >= 40 && score < 60) {
+			evaluation = "呵呵哒，还能不能愉快地玩耍";
+		} else if (score >= 60 && score < 80) {
+			evaluation = "嘿嘿，你挺关心我的嘛";
+		} else if (score >= 80 && score < 100) {
+			evaluation = "懂我的人不多，你算一个";
+		} else if (score == 100) {
+			evaluation = "哟，一被子的好朋友";
+		}
+
+		// console.log(userMsg.headimgurl);
+		UserAns.save({
+			open_id: this.session.openid,
+			nickname: userMsg.nickname,
+			headimgurl: userMsg.headimgurl,
+			sex: userMsg.sex,
+			page_id: this.params.id,
+			q_a: q_a_array,
+			score: score,
+			evaluation:	evaluation	
 		});
 	}
-	var userMsg = Redis.getUserMsg(this.session.openid);
-	UserAns.save({
-		open_id: this.session.openid,
-		nickname: userMsg.nickname,
-		headimgurl: userMsg.headimgurl,
-		sex: userMsg.sex,
-		page_id: this.params.id,
-		q_a: q_a_array,
-		score: userAnsJson.score,
-		evaluation: userAnsJson.evaluation		
-	});
 	this.status = 200;
 	this.body = {page_id: this.params.id};
 });
