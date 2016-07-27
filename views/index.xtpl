@@ -9,7 +9,7 @@
 </head>
 <body>
 	{{{block ("body")}}}
-	<script src="//cdn.yeyeapp.in/node-scheme/public/scripts/common-f90ca75986.js"></script>
+	<script src="//cdn.yeyeapp.in/node-scheme/public/scripts/common-9e1a1ea7da.js"></script>
 	<script>
 		{{{block ("wxConfig")}}}
 		Zepto(function ($){

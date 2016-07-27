@@ -16,12 +16,14 @@ var qaSDK = {
 			_this.beginAnswerSelect($(this), url, _this, false);
 		});
 
-		var question_array = question_hidden;
+		var question_array = new Array();
+		question_array = question_hidden.slice(0);
 		$('.exchange').on('tap', function (){
 			var thisId = parseInt($(this).parent().attr('data-id'));
 			var rand = _this.randGenerator(question_array);
 			if (rand === false){
-				question_array = question_hidden;
+				question_array = new Array();
+				question_array = question_hidden.slice(0);
 			} else {
 				// 从数组中取出一组数据并替换到当前题目中
 				$('.ques-pic[data-id="'+thisId+'"]').addClass('showin');
