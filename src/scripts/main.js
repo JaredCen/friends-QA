@@ -48,7 +48,7 @@ var qaSDK = {
 	},
 	answerInit: function (page_id, url){
 		$('.begin-answer').on('tap', function(){
-			window.location.href = url+"/node-scheme/qa/answer/begin/"+page_id;
+			window.location.href = url+"/node-scheme/qa/answer/begin?_id=" + page_id;
 		});
 	},
 	answerBegin: function (url){
@@ -63,10 +63,10 @@ var qaSDK = {
 		});
 		$('.ball-full').css('height', score + '%');
 		$('.play').on('tap', function (){
-			window.location.href = window.location.href.split("/visit/")[0]+"/create";
+			window.location.href = window.location.href.split("/answer")[0]+"/create";
 		});
 		$('.check').on('tap', function (){
-			window.location.href = window.location.href.split("/visit/")[0]+"/visit/check/"+window.location.href.split("/visit/")[1];
+			window.location.href = window.location.href.split("/answer")[0]+"/visit/check"+window.location.href.split("/answer")[1];
 		});
 	},
 	visitSelf: function (url){
@@ -81,11 +81,11 @@ var qaSDK = {
 		});
 
 		$('.remind').on('tap', function (){
-			window.location.href = window.location.href.split("/visit/")[0]+"/visit/check/"+window.location.href.split("/visit/")[1];
+			window.location.href = window.location.href.split("/answer")[0]+"/visit/check"+window.location.href.split("/answer")[1];
 		});
 
 		$('.user-info').on('tap', function (){
-			window.location.href = window.location.href.split("/visit/")[0]+"/visit/check/"+window.location.href.split("/visit/")[1]+"?open_id="+$(this).attr('data-openid');
+			window.location.href = window.location.href.split("/answer")[0]+"/visit/check"+window.location.href.split("/answer")[1]+"&open_id="+$(this).attr('data-openid');
 		});
 	},
 	check: function (url){
@@ -151,7 +151,7 @@ var qaSDK = {
 			obj.storeQuestion = [];
 			$.ajax({
 				type: 'post',
-				url: postUrl+'/node-scheme/qa/create/begin/',
+				url: postUrl+'/node-scheme/qa/create/begin',
 				data: JSON.stringify(dataJson),
 				contentType: 'application/json',
 				beforeSend: function (xhr, settings){
@@ -160,7 +160,7 @@ var qaSDK = {
 				success: function (data){
 					setTimeout(function (){
 						$('#loading-toast').css('display', 'none');
-						window.location.href = postUrl+'/node-scheme/qa/create/finish/'+JSON.parse(data).page_id;
+						window.location.href = postUrl+'/node-scheme/qa/create/finish?_id='+JSON.parse(data)._id;
 					}, 500);
 				},
 				error: function (xhr, type){
@@ -189,7 +189,7 @@ var qaSDK = {
 				success: function (data){
 					setTimeout(function (){
 						$('#loading-toast').css('display', 'none');
-						window.location.href = postUrl.split('/answer/')[0]+"/visit/"+JSON.parse(data).page_id;
+						window.location.href = postUrl.split('/answer/')[0]+"/answer?_id="+JSON.parse(data)._id;
 					}, 500);
 				},
 				error: function (xhr, type){

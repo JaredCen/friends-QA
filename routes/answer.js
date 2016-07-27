@@ -8,10 +8,11 @@ var router = require("koa-router")(),
 
 var wechatClient =  plugin.wechatOauthInit();
 
-router.get('/:id', function *(next){
+router.get('/', function *(next){
+	// this.session.openid = null;
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
-		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.request.header.host+"/node-scheme/qa/answer/" + this.params.id), '', 'snsapi_userinfo'));
+		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.host+"/node-scheme/qa/answer?_id=" + this.query._id), '', 'snsapi_userinfo'));
 	} else if (!this.session.openid && this.query.code){
 		var code = this.query.code;
 		// yield执行Promise回调赋值，得到resolve/reject的表量而非Promise对象;
@@ -29,53 +30,90 @@ router.get('/:id', function *(next){
 		var UserMsg = yield User.findOne({open_id: this.session.openid});
 		if (! UserMsg) {
 			var userMsg = {};
-			wechatClient.getUser(this.session.openid, function(err, result){
-				userMsg = {
-					open_id: result.openid,
-					sex: result.sex,
-					nickname: result.nickname,
-					headimgurl: result.headimgurl,
-			   		city: result.headimgurl,
-				    province: result.province,
-				    country: result.country,
-					union_id: result.unionid
-				};
-				User.save(userMsg);
+			var _this = this;
+			// this is a async function !
+			yield new Promise((resolve, reject) => {
+				wechatClient.getUser(this.session.openid, function(err, result){
+					if (err) {
+						reject(err);
+					} else {
+						userMsg = {
+							open_id: result.openid,
+							sex: result.sex,
+							nickname: result.nickname,
+							headimgurl: result.headimgurl,
+					   		city: result.headimgurl,
+						    province: result.province,
+						    country: result.country,
+							union_id: result.unionid
+						};
+						User.save(userMsg);
+						Redis.setUserMsg(_this.session.openid, userMsg);
+						resolve(true);
+					}
+				});				
 			});
-			Redis.setUserMsg(this.session.openid, userMsg);
 		}
 	}
 
 	// 查询数据库检测是否为出题人
 	var userQuesMsg = yield UserQues.findOne({
-		open_id: this.session.openid,
-		page_id: this.params.id
+		_id: this.query._id,
+		open_id: this.session.openid
 	});
+	// already answer?
 	var userAnsMsg = yield UserAns.findOne({
-		page_id: this.params.id,
+		page_id: this.query._id,
 		open_id: this.session.openid
 	});
 	var userAnsList = yield UserAns.find({
-		page_id: this.params.id
+		page_id: this.query._id
 	});
+	var userMsg = yield Redis.getUserMsg(this.session.openid);
 	var sgObj = yield plugin.getSignature(this);
 	if(! userAnsMsg && ! userQuesMsg){
 		yield this.render('init', {
 			isAnswer: true,
 			userList: userAnsList,
+			_id: this.query._id,
 			url: "http://"+this.host,
-			method: "answerInit("+this.params.id+", url)",
+			method: "answerInit(page_id, url)",
 			appid: plugin.appid,
 			sgObj: sgObj
 		});
-	} else {
-		this.redirect("/node-scheme/qa/visit/"+this.params.id);
+	} else if (! userAnsMsg && userQuesMsg._id) {
+		yield this.render('visit', {
+			visit_self: true,
+			user_ques_msg: userQuesMsg,
+			user_ans_list: userAnsList,
+			shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
+			footerUrl: "http://" + this.host + "/node-scheme/qa/visit/more",
+			method: "visitSelf(footerUrl)",
+			url: "http://" + this.host + "/node-scheme/qa/answer?_id=" + this.query._id,
+			headimgurl: userMsg.headimgurl,
+			appid: plugin.appid,
+			sgObj: sgObj
+		});
+	} else if (userAnsMsg._id && ! userQuesMsg) {
+		yield this.render('visit', {
+			visit_self: false,
+			user_ans_msg: userAnsMsg,
+			user_ans_list: userAnsList,
+			shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
+			footerUrl: "http://" + this.host + "/node-scheme/qa/visit/more",
+			method: "visitOther(score, footerUrl)",
+			url: "http://" + this.host + "/node-scheme/qa/answer?_id" + this.query._id,
+			headimgurl: userMsg.headimgurl,
+			appid: plugin.appid,
+			sgObj: sgObj
+		});		
 	}
 });
 
-router.get('/begin/:id', function *(next){
+router.get('/begin', function *(next){
 	var sgObj = yield plugin.getSignature(this);
-	var userQuesMsg = yield UserQues.findOne({page_id: this.params.id});
+	var userQuesMsg = yield UserQues.findOne({_id: this.query._id});
+	// can this.url contain quertstring?
 	yield this.render('begin', {
 		isAnswer: true,
 		questionMsg: userQuesMsg,
@@ -86,15 +124,17 @@ router.get('/begin/:id', function *(next){
 	});
 });
 
-router.post('/begin/:id', function *(next){
+router.post('/begin', function *(next){
 	var userAnsJson = yield parse.json(this);
+	// can be ignored...
 	var userAnsRecord = yield UserAns.findOne({
-		open_id: this.session.openid,
-		page_id: this.params.id
+		page_id: this.query._id,
+		open_id: this.session.openid
 	});
 	if (! userAnsRecord) {
-		var userQuesMsg = yield UserQues.findOne({page_id: this.params.id});
+		var userQuesMsg = yield UserQues.findOne({_id: this.query._id});
 		var userMsg = yield Redis.getUserMsg(this.session.openid);
+		// score caculating...
 		var q_a_array = [], correct, correctCount = 0, allCount = 0, score, evaluation;
 		for (var i=0; i<5; i++) {
 			allCount = allCount + parseInt(userQuesMsg.q_a[i].answer.length);
@@ -128,20 +168,19 @@ router.post('/begin/:id', function *(next){
 			evaluation = "哟，一被子的好朋友";
 		}
 
-		// console.log(userMsg.headimgurl);
 		UserAns.save({
+			page_id: this.query._id,
 			open_id: this.session.openid,
 			nickname: userMsg.nickname,
 			headimgurl: userMsg.headimgurl,
 			sex: userMsg.sex,
-			page_id: this.params.id,
 			q_a: q_a_array,
 			score: score,
 			evaluation:	evaluation	
 		});
 	}
 	this.status = 200;
-	this.body = {page_id: this.params.id};
+	this.body = {_id: this.query._id};
 });
 
 module.exports = router;

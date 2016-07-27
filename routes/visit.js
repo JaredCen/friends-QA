@@ -5,58 +5,16 @@ var router = require("koa-router")(),
 	Redis = require("../config/redis.js"),
 	plugin = require('../config/plugin.js');
 
-router.get('/:id', function *(next){
-	var userMsg = yield Redis.getUserMsg(this.session.openid);
- 	var sgObj = yield plugin.getSignature(this);
-	// 查询数据库检测是否为出题人
-	var userQuesMsg = yield UserQues.findOne({
-		open_id: this.session.openid,
-		page_id: this.params.id
-	});
-	if (! userQuesMsg){
-		var userAnsList = yield UserAns.find({page_id: this.params.id});
-		var userAnsMsg = yield UserAns.findOne({
-			page_id: this.params.id,
-			open_id: this.session.openid
-		});
-		yield this.render('visit', {
-			visit_self: false,
-			user_ans_msg: userAnsMsg,
-			user_ans_list: userAnsList,
-			shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
-			footerUrl: "http://" + this.host + "/node-scheme/qa/visit/more",
-			method: "visitOther(score, footerUrl)",
-			url: "http://" + this.host + "/node-scheme/qa/answer/" + this.params.id,
-			headimgurl: userMsg.headimgurl,
-			appid: plugin.appid,
-			sgObj: sgObj
-		});
-	} else {
-		var userAnsList = yield UserAns.find({page_id: this.params.id});
-		yield this.render('visit', {
-			visit_self: true,
-			user_ques_msg: userQuesMsg,
-			user_ans_list: userAnsList,
-			shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
-			footerUrl: "http://" + this.host + "/node-scheme/qa/visit/more",
-			method: "visitSelf(footerUrl)",
-			url: "http://" + this.host + "/node-scheme/qa/answer/" + this.params.id,
-			headimgurl: userMsg.headimgurl,
-			appid: plugin.appid,
-			sgObj: sgObj
-		});
-	}
-});
 
-router.get('/check/:id', function *(next){
+router.get('/check', function *(next){
 	var userQuesMsg = yield UserQues.findOne({
-		open_id: this.session.openid,
-		page_id: this.params.id
+		_id: this.query._id,
+		open_id: this.session.openid
 	});
 	var sgObj = yield plugin.getSignature(this);
 	if (! userQuesMsg){
 		var userAnsMsg = yield UserAns.findOne({
-			page_id: this.params.id,
+			page_id: this.query._id,
 			open_id: this.session.openid
 		});
 		yield this.render('check', {
@@ -70,7 +28,7 @@ router.get('/check/:id', function *(next){
 		});
 	} else if (this.query.open_id) {	
 		var userAnsMsg = yield UserAns.findOne({
-			page_id: this.params.id,
+			page_id: this.query._id,
 			open_id: this.query.open_id
 		});		
 		yield this.render('check', {

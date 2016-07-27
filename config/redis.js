@@ -72,28 +72,28 @@ RedisOP.prototype.getToken = function (openid){
 }
 
 RedisOP.prototype.setUserMsg = function (openid, obj){
-    redisClient.set(appid + openid + "_user_msg", JSON.stringify(obj), function (err){
+    redisClient.set(appid + openid + "_qa_user_msg", JSON.stringify(obj), function (err){
         if (err){
-            console.warn(err);           
+            console.warn(err);          
         } else {
-            redisClient.expire(appid + openid + "_user_msg", 2 * 24 * 60 * 60);
+            redisClient.expire(appid + openid + "_qa_user_msg", 24 * 60 * 60);
         }
     });
 }
 
 RedisOP.prototype.getUserMsg = function (openid){
     return new Promise((resolve, reject) => {
-        redisClient.get(appid + openid + "_user_msg", function (err, data){
-            var user = JSON.parse(data);
-            if (! user) {
+        redisClient.get(appid + openid + "_qa_user_msg", function (err, data){
+            var userData = JSON.parse(data);
+            if (! userData) {
                 User.findOne({open_id: openid}).then((userMsg) => {
-                    redisClient.set(appid + openid + "_user_msg", JSON.stringify(userMsg), function (err){
-                        redisClient.expire(appid + openid + "_user_msg", 2 * 24 * 60 * 60);
+                    redisClient.set(appid + openid + "_qa_user_msg", JSON.stringify(userMsg), function (err){
+                        redisClient.expire(appid + openid + "_qa_user_msg", 24 * 60 * 60);
                     });
                     resolve(userMsg);
                 });
             } else {
-                resolve(user);             
+                resolve(userData);             
             }
         });
     });

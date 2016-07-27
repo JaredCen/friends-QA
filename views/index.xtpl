@@ -10,8 +10,8 @@
 </head>
 <body>
 	{{{block ("body")}}}
-	<script src="//cdn.yeyeapp.in/node-scheme/public/scripts/common-a7fe118d7c.js"></script>
-	{{!-- <script src="//m.yeyeapp.in:3000/scripts/common-a7fe118d7c.js"></script> --!}}
+	<script src="//cdn.yeyeapp.in/node-scheme/public/scripts/common-228067e327.js"></script>
+	{{!-- <script src="//m.yeyeapp.in:3000/scripts/common-228067e327.js"></script> --!}}
 	<script>
 		{{{block ("wxConfig")}}}
 		Zepto(function ($){

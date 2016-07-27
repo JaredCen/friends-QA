@@ -33,9 +33,10 @@ router.get('/update', function *(next){
 });
 
 router.get('/', function *(next){
+	this.session.openid = null;
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
-		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.request.header.host+"/node-scheme/qa/create"), '', 'snsapi_userinfo'));
+		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.host+"/node-scheme/qa/create"), '', 'snsapi_userinfo'));
 	} else if (!this.session.openid && this.query.code){
 		var code = this.query.code;
 		// yield执行Promise回调赋值，得到resolve/reject的表量而非Promise对象;
@@ -53,20 +54,29 @@ router.get('/', function *(next){
 		var UserMsg = yield User.findOne({open_id: this.session.openid});
 		if (! UserMsg) {
 			var userMsg = {};
-			wechatClient.getUser(this.session.openid, function(err, result){
-				userMsg = {
-					open_id: result.openid,
-					sex: result.sex,
-					nickname: result.nickname,
-					headimgurl: result.headimgurl,
-			   		city: result.headimgurl,
-				    province: result.province,
-				    country: result.country,
-					union_id: result.unionid
-				};
-				User.save(userMsg);
+			var _this = this;
+			// this is a async function !
+			yield new Promise((resolve, reject) => {
+				wechatClient.getUser(this.session.openid, function(err, result){
+					if (err) {
+						reject(err);
+					} else {
+						userMsg = {
+							open_id: result.openid,
+							sex: result.sex,
+							nickname: result.nickname,
+							headimgurl: result.headimgurl,
+					   		city: result.headimgurl,
+						    province: result.province,
+						    country: result.country,
+							union_id: result.unionid
+						};
+						User.save(userMsg);
+						Redis.setUserMsg(_this.session.openid, userMsg);
+						resolve(true);
+					}
+				});				
 			});
-			Redis.setUserMsg(this.session.openid, userMsg);
 		} 
 	}
 
@@ -91,6 +101,7 @@ router.get('/begin', function *(next){
 	for (j in query) {
 		questionHidden.push(query[j]);
 	}	
+
 	var sgObj = yield plugin.getSignature(this);
 	yield this.render('begin', {
 		isAnswer: false,
@@ -105,10 +116,7 @@ router.get('/begin', function *(next){
 
 router.post('/begin', function *(next){
 	var userQuesJson = yield parse.json(this);
-	// console.log(userQuesJson);
-	var userQuesMsg = yield UserQues.find();
 	var q_a_array = [];
-	var pageId = userQuesMsg.length+1;
 	for (var i=0; i<5; i++){
 		var questionArray = yield Question.findOne({id: userQuesJson[i].sqlId});
 		q_a_array.push({
@@ -125,21 +133,21 @@ router.post('/begin', function *(next){
 		nickname: userMsg.nickname,
 		headimgurl: userMsg.headimgurl,
 		sex: userMsg.sex,
-		page_id: pageId,
 		q_a: q_a_array
 	};
-	UserQues.save(userQuesObj);
+	var userQuesMsg = yield UserQues.save(userQuesObj);
+	var _id = userQuesMsg._id;
 	this.status = 200;
-	this.body = {page_id: pageId};
+	this.body = {_id: _id};
 });
 
-router.get('/finish/:id', function *(next){
+router.get('/finish', function *(next){
 	var userMsg = yield Redis.getUserMsg(this.session.openid);
 	// 调用微信js-sdk
  	var sgObj = yield plugin.getSignature(this);
  	
 	yield this.render('finish', {
-		url: "http://" + this.host + "/node-scheme/qa/answer/" + this.params.id,
+		url: "http://" + this.host + "/node-scheme/qa/answer?_id=" + this.query._id,
 		shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
 		headimgurl: userMsg.headimgurl,
 		appid: plugin.appid,

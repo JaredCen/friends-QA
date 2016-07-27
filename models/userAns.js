@@ -3,11 +3,11 @@ var connect = require('./connect.js'),
 
 var Schema = mongoose.Schema;
 var UserAnsSchema = new Schema({
+	page_id: String,
 	open_id: String,
 	nickname: String,
 	headimgurl: String,
 	sex: Number,
-	page_id: String,
 	q_a: Array,
 	score: Number,
 	evaluation: String,

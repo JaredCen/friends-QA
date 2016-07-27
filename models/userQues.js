@@ -7,7 +7,6 @@ var UserQuesSchema = new Schema({
 	nickname: String,
 	headimgurl: String,
 	sex: Number,
-	page_id: String,
 	q_a: Array,
     create_at: {type: Date, default: Date.now},
     update_at: {type: Date}
