@@ -33,7 +33,7 @@ router.get('/update', function *(next){
 });
 
 router.get('/', function *(next){
-	this.session.openid = null;
+	// this.session.openid = null;
 	// 微信授权
 	if (!this.session.openid && !this.query.code){
 		this.redirect(wechatClient.getAuthorizeURL(encodeURI("http://"+this.host+"/node-scheme/qa/create"), '', 'snsapi_userinfo'));
