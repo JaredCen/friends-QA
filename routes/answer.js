@@ -55,7 +55,6 @@ router.get('/', function *(next){
 			});
 		}
 	}
-
 	// 查询数据库检测是否为出题人
 	var userQuesMsg = yield UserQues.findOne({
 		_id: this.query._id,
@@ -104,7 +103,7 @@ router.get('/', function *(next){
 			shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
 			footerUrl: "http://" + this.host + "/node-scheme/qa/visit/more",
 			method: "visitOther(score, footerUrl)",
-			url: "http://" + this.host + "/node-scheme/qa/answer?_id" + this.query._id,
+			url: "http://" + this.host + "/node-scheme/qa/answer?_id=" + this.query._id,
 			headimgurl: userMsg.headimgurl,
 			appid: plugin.appid,
 			sgObj: sgObj,
