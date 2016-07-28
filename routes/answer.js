@@ -79,7 +79,8 @@ router.get('/', function *(next){
 			url: "http://"+this.host,
 			method: "answerInit(page_id, url)",
 			appid: plugin.appid,
-			sgObj: sgObj
+			sgObj: sgObj,
+			staticHost: plugin.staticHost
 		});
 	} else if (! userAnsMsg && userQuesMsg._id) {
 		yield this.render('visit', {
@@ -92,7 +93,8 @@ router.get('/', function *(next){
 			url: "http://" + this.host + "/node-scheme/qa/answer?_id=" + this.query._id,
 			headimgurl: userMsg.headimgurl,
 			appid: plugin.appid,
-			sgObj: sgObj
+			sgObj: sgObj,
+			staticHost: plugin.staticHost
 		});
 	} else if (userAnsMsg._id && ! userQuesMsg) {
 		yield this.render('visit', {
@@ -105,7 +107,8 @@ router.get('/', function *(next){
 			url: "http://" + this.host + "/node-scheme/qa/answer?_id" + this.query._id,
 			headimgurl: userMsg.headimgurl,
 			appid: plugin.appid,
-			sgObj: sgObj
+			sgObj: sgObj,
+			staticHost: plugin.staticHost
 		});		
 	}
 });
@@ -120,7 +123,8 @@ router.get('/begin', function *(next){
 		url: "http://"+this.host+this.url,
 		method: "answerBegin(url)",
 		appid: plugin.appid,
-		sgObj: sgObj
+		sgObj: sgObj,
+		staticHost: plugin.staticHost
 	});
 });
 

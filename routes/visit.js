@@ -24,7 +24,8 @@ router.get('/check', function *(next){
 			footerUrl: "http://" + this.host + "/node-scheme/qa/visit/more",
 			method: "check(footerUrl)",
 			appid: plugin.appid,
-			sgObj: sgObj
+			sgObj: sgObj,
+			staticHost: plugin.staticHost
 		});
 	} else if (this.query.open_id) {	
 		var userAnsMsg = yield UserAns.findOne({
@@ -38,7 +39,8 @@ router.get('/check', function *(next){
 			footerUrl: "http://" + this.host + "/node-scheme/qa/visit/more",
 			method: "check(footerUrl)",
 			appid: plugin.appid,
-			sgObj: sgObj
+			sgObj: sgObj,
+			staticHost: plugin.staticHost
 		});		
 	} else {
 		yield this.render('check', {
@@ -47,7 +49,8 @@ router.get('/check', function *(next){
 			footerUrl: "http://" + this.host + "/node-scheme/qa/visit/more",
 			method: "check(footerUrl)",
 			appid: plugin.appid,
-			sgObj: sgObj
+			sgObj: sgObj,
+			staticHost: plugin.staticHost
 		});	
 	}
 });
@@ -61,7 +64,8 @@ router.get('/more', function *(next){
 	];
 	yield this.render('more', {
 		word: word,
-		method: "more()"
+		method: "more()",
+		staticHost: plugin.staticHost
 	});
 });
 

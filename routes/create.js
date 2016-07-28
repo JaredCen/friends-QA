@@ -85,7 +85,8 @@ router.get('/', function *(next){
 		isAnswer: false,
 		method: "createInit()",
 		appid: plugin.appid,
-		sgObj: sgObj
+		sgObj: sgObj,
+		staticHost: plugin.staticHost
 	});
 });
 
@@ -110,7 +111,8 @@ router.get('/begin', function *(next){
 		url: "http://"+this.host,
 		method: "createBegin(questionHidden, url)",
 		appid: plugin.appid,
-		sgObj: sgObj
+		sgObj: sgObj,
+		staticHost: plugin.staticHost
 	});
 });
 
@@ -151,7 +153,8 @@ router.get('/finish', function *(next){
 		shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
 		headimgurl: userMsg.headimgurl,
 		appid: plugin.appid,
-		sgObj: sgObj
+		sgObj: sgObj,
+		staticHost: plugin.staticHost
 	});
 });
 

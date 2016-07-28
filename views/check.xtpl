@@ -8,10 +8,12 @@
 	{{#if (visit_self)}}
 
 	<section id="result-compare-list">
-		{{#each (user_ques_msg.q_a)}}
+		{{#each (user_ques_msg.q_a)}}	
 		<div class="result">
-			<span class="question">{{this.question}}</span>
-			<span class="answer">{{this.answer_correct}}</span>
+			<div class="word">
+				<span class="question">{{this.question}}</span>
+				<span class="answer">{{this.answer_correct}}</span>			
+			</div>
 		</div>
 		{{/each}}
 	</section>
@@ -25,8 +27,13 @@
 	<section id="result-compare-list">
 		{{#each (user_ans_msg.q_a)}}
 		<div class="result {{#if (!this.correct)}}wrong{{/if}}">
-			<span class="question">{{this.question}}</span>
-			<span class="answer">{{#if (identity)}}{{this.answer_select}}{{else}}{{this.answer_correct}}{{/if}}</span>
+			<div class="word">
+				<span class="question">{{this.question}}</span>
+				<span class="answer">{{#if (identity)}}{{this.answer_select}}{{else}}{{this.answer_correct}}{{/if}}</span>			
+			</div>
+			<div class="judge">
+				<span class="iconfont">{{#if (!this.correct)}}&#xe600;{{else}}&#xe601;{{/if}}</span>
+			</div>
 		</div>
 		{{/each}}
 	</section>

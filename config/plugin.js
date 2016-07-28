@@ -38,7 +38,8 @@ var plugin = {
 		return wechatClient;
 	},
 	appid: process.env.appid,
-	appsecret: process.env.appsecret
+	appsecret: process.env.appsecret,
+	staticHost: process.env.stHost || "//m.yeyeapp.in:3000"
 }
 
 module.exports = plugin;

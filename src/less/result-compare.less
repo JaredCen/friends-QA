@@ -5,9 +5,19 @@
 		border: 2px solid @blue;
 		border-radius: @radius;
 		display: flex;
-		flex-direction: column;
+		align-items: center;
 		padding: .2rem .4rem;
 		margin: .6rem 0;
+		.word {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+		}
+		.judge {
+			font-size: 1rem;
+			margin-right: .8rem;
+			color: @green;
+		}
 		.question,
 		.answer {
 			margin: .1rem 0;
@@ -24,6 +34,9 @@
 	.wrong {
 		border: 2px solid @red !important;
 		.answer {
+			color: @red !important;
+		}
+		.judge {
 			color: @red !important;
 		}
 	}
