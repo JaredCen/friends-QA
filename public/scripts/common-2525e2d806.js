@@ -87,7 +87,7 @@ var qaSDK = {
 			window.location.href = window.location.href.split("/answer")[0]+"/visit/check"+window.location.href.split("/answer")[1];
 		});
 
-		$('.user-info').on('tap', function (){
+		$('.user-info').on('click', function (){
 			window.location.href = window.location.href.split("/answer")[0]+"/visit/check"+window.location.href.split("/answer")[1]+"&open_id="+$(this).attr('data-openid');
 		});
 	},

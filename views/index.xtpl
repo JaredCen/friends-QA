@@ -9,7 +9,7 @@
 </head>
 <body>
 	{{{block ("body")}}}
-	<script src="{{staticHost}}/scripts/common-4118bb3e0d.js"></script>
+	<script src="{{staticHost}}/scripts/common-2525e2d806.js"></script>
 	<script>
 		{{{block ("wxConfig")}}}
 		Zepto(function ($){
