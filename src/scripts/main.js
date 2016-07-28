@@ -104,10 +104,10 @@ var qaSDK = {
 			window.location.href = "http://m.yeyeapp.in/scheme/moments/redpack/create-timeline/3";
 		});
 		$('.proj-2').on('tap', function (){
-			window.location.href = "http://m.yeyeapp.in/node/care/care-index?upid=5798929f70cc9bda5ebd751a";
+			window.location.href = "http://m.yeyeapp.in/scheme/friends-memory/visit/7442";
 		});
 		$('.proj-3').on('tap', function (){
-			window.location.href = "http://m.yeyeapp.in/scheme/friends-memory/visit/7442";
+			window.location.href = "http://m.yeyeapp.in/node/care/care-index?upid=5798929f70cc9bda5ebd751a";
 		});
 	},
 	randGenerator: function (array){

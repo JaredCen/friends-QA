@@ -1,16 +1,19 @@
-#finish-button {
+#finish {
 	position: absolute;
-	width: 100%;
-	bottom: 0;
-	margin-bottom: 3rem;
-	text-align: center;
-	button {
-		width: 60%;
-		background-color: @blue;
-		border-radius: @radius;
-		border: 1px solid @blue;
-		padding: 1rem;
-		color: #fff;
-		font-size: .88rem;
+	top: 50%;
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+	left:10%;
+	box-sizing: border-box;
+	padding: .4rem;
+	border: 2px solid @blue;
+	.pic {
+		width: 100%;
+	}
+	.word {
+		margin: 3rem 0;
+		width: 100%;
 	}
 }

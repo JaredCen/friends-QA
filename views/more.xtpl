@@ -18,7 +18,7 @@
 				<span>{{this.title}}</span>
 				<span>{{this.count}}万+人在玩</span>
 			</div>
-			<button>马上赚钱</button>
+			<button>{{#if (xindex === 3)}}马上去玩{{else}}马上赚钱{{/if}}</button>
 		</div>
 		{{/each}}
 	</section>

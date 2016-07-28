@@ -5,11 +5,9 @@
 {{/block}}
 
 {{#block ('body')}}
-	<section id="visit-header">
-		<img src="http://7xotti.com2.z0.glb.qiniucdn.com/Fk89WE3nrUCjH3TK-zVmGNKshOEk">
-	</section>
-	<section id="finish-button">
-		<button>题目设置完毕<br>邀请好友回答</button>
+	<section id="finish">
+		<img class="pic" src="http://7xotti.com2.z0.glb.qiniucdn.com/Fk89WE3nrUCjH3TK-zVmGNKshOEk">
+		<img class="word" src="http://7xotti.com2.z0.glb.qiniucdn.com/Fi0Qa9qb9QhH-AC61yDGiyzczhy-">
 	</section>
 {{/block}}
 

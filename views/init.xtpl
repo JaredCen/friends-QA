@@ -15,15 +15,15 @@
 			<img src="//cdn.yeyeapp.in/node-scheme/public/img/welcome.png">
 		</section>
 
-		{{#if (userList[0].user_img)}}
+		{{#if (userList[0].headimgurl)}}
 		<section id="user-group">
 			<div class="container">
 				{{#each (userList)}}
 					<div class="user-info">
 						<div class="container">
-							<img src="{{this.user_img}}">
+							<img src="{{this.headimgurl}}">
 						</div>
-						<span>{{this.score}}</span>
+						<span>{{this.score}}%</span>
 					</div>
 				{{/each}}
 			</div>

@@ -86,7 +86,7 @@ gulp.task('watch-html', function() {
 });
 
 gulp.task('rev', function (){
-	return gulp.src(['src/rev/**/*.json', 'src/xtpl/index.xtpl'])
+	return gulp.src(['src/rev/**/*.json', 'views/index.xtpl'])
 		.pipe(revCollector({
 			replaceReved: true
 		}))
