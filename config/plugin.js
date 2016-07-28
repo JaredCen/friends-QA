@@ -37,6 +37,18 @@ var plugin = {
 		wechatClient.setOpts({"timeout": 2000});
 		return wechatClient;
 	},
+	domainManage: function (){
+		if (! process.env.stHost) {
+			return "m.yeyeapp.in";
+		} else {
+			var domain = [
+				"728.yeyejump.com",
+				"728.yeyelink.com"
+			];
+			var rand = Math.floor(Math.random() * domain.length);
+			return domain[rand];
+		}
+	},
 	appid: process.env.appid,
 	appsecret: process.env.appsecret,
 	staticHost: process.env.stHost || "//m.yeyeapp.in:3000"

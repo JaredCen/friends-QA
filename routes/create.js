@@ -147,9 +147,9 @@ router.get('/finish', function *(next){
 	var userMsg = yield Redis.getUserMsg(this.session.openid);
 	// 调用微信js-sdk
  	var sgObj = yield plugin.getSignature(this);
- 	
+	var domain = plugin.domainManage();
 	yield this.render('finish', {
-		url: "http://" + this.host + "/node-scheme/qa/answer?_id=" + this.query._id,
+		url: "http://" + domain + "/node-scheme/qa/answer?_id=" + this.query._id,
 		shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
 		headimgurl: userMsg.headimgurl,
 		appid: plugin.appid,

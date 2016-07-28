@@ -31,6 +31,7 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
+    "cluster": "^0.7.7",
     "co-body": "^4.2.0",
     "crypto": "^0.0.3",
     "debug": "^2.2.0",
@@ -44,6 +45,7 @@
     "koa-static": "^2.0.0",
     "mini-logger": "^1.1.0",
     "mongoose": "^4.4.19",
+    "os": "^0.1.1",
     "path": "^0.12.7",
     "redis": "^2.6.2",
     "request": "^2.74.0",

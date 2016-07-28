@@ -82,6 +82,7 @@ router.get('/', function *(next){
 			staticHost: plugin.staticHost
 		});
 	} else if (! userAnsMsg && userQuesMsg._id) {
+		var domain = plugin.domainManage();
 		yield this.render('visit', {
 			visit_self: true,
 			user_ques_msg: userQuesMsg,
@@ -89,13 +90,14 @@ router.get('/', function *(next){
 			shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
 			footerUrl: "http://" + this.host + "/node-scheme/qa/visit/more",
 			method: "visitSelf(footerUrl)",
-			url: "http://" + this.host + "/node-scheme/qa/answer?_id=" + this.query._id,
+			url: "http://" + domain + "/node-scheme/qa/answer?_id=" + this.query._id,
 			headimgurl: userMsg.headimgurl,
 			appid: plugin.appid,
 			sgObj: sgObj,
 			staticHost: plugin.staticHost
 		});
 	} else if (userAnsMsg._id && ! userQuesMsg) {
+		var domain = plugin.domainManage();
 		yield this.render('visit', {
 			visit_self: false,
 			user_ans_msg: userAnsMsg,
@@ -103,7 +105,7 @@ router.get('/', function *(next){
 			shareUrl: "http://" + this.host + "/node-scheme/qa/visit/qrcode",
 			footerUrl: "http://" + this.host + "/node-scheme/qa/visit/more",
 			method: "visitOther(score, footerUrl)",
-			url: "http://" + this.host + "/node-scheme/qa/answer?_id=" + this.query._id,
+			url: "http://" + domain + "/node-scheme/qa/answer?_id=" + this.query._id,
 			headimgurl: userMsg.headimgurl,
 			appid: plugin.appid,
 			sgObj: sgObj,
