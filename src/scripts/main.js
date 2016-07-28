@@ -1,9 +1,18 @@
+
+/*
+ *	author: Junrey
+ *	desc: 所有页面的前端js代码都在这里，用对象字面量封装，每个页面调用哪些函数通过路由渲染到前端页面
+ * 	
+ */
+
 var qaSDK = {
+	// 出题初始化页面
 	createInit: function (){
 		$('.begin-create').on('tap', function (){
 			window.location.href = "http://" + window.location.host + "/node-scheme/qa/create/begin";
 		});
 	},
+	// 开始出题
 	createBegin: function (question_hidden, url){
 		// 清空数组
 		this.storeQuestion = [];
@@ -46,17 +55,20 @@ var qaSDK = {
 			}
 		});
 	},
+	// 回答初始化页面
 	answerInit: function (page_id, url){
 		$('.begin-answer').on('tap', function(){
 			window.location.href = url+"/node-scheme/qa/answer/begin?_id=" + page_id;
 		});
 	},
+	// 开始回答
 	answerBegin: function (url){
 		var _this = this;
 		$(".ans-group > div").on('tap', function (){
 			_this.beginAnswerSelect($(this), url, _this, true);
 		});
 	},
+	// 回答者访问已回答的页面
 	visitOther: function (score, url){
 		$('#footer button').on('tap', function (){
 			window.location.href = url;
@@ -69,6 +81,7 @@ var qaSDK = {
 			window.location.href = window.location.href.split("/answer")[0]+"/visit/check"+window.location.href.split("/answer")[1];
 		});
 	},
+	// 创建者访问自己创建的页面
 	visitSelf: function (url){
 		$('#footer button').on('tap', function (){
 			window.location.href = url;
@@ -88,6 +101,7 @@ var qaSDK = {
 			window.location.href = window.location.href.split("/answer")[0]+"/visit/check"+window.location.href.split("/answer")[1]+"&open_id="+$(this).attr('data-openid');
 		});
 	},
+	// 查看答案
 	check: function (url){
 		$('.connect').on('tap', function (){
 			window.location.href = url;
@@ -96,6 +110,7 @@ var qaSDK = {
 			window.location.href = window.location.href.split("/visit/")[0]+"/create";
 		});
 	},
+	// 与其他活动页的链接
 	more: function (){
 		$('.proj-0').on('tap', function (){
 			window.location.href = "http://m.yeyeapp.in/scheme/friends-exposes/visit/1152998";
@@ -110,6 +125,7 @@ var qaSDK = {
 			window.location.href = "http://m.yeyeapp.in/node/care/care-index?upid=5798929f70cc9bda5ebd751a";
 		});
 	},
+	// 随机数生成，用于出题时的换题操作
 	randGenerator: function (array){
 		var rand = Math.floor(Math.random()*array.length);
 		if (array.length == 0){
@@ -118,7 +134,9 @@ var qaSDK = {
 			return rand;
 		}
 	},
+	// 该数组用来存已选答案
 	storeQuestion: [],
+	// 控制选择答案的操作
 	beginAnswerSelect: function (objSelector, postUrl, obj, isAnswer){
 		$('.ans-group .selected').removeClass('selected');
 		objSelector.addClass('selected');
