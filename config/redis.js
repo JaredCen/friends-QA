@@ -1,3 +1,8 @@
+/*
+ *  author: Junrey
+ *  desc: redis 建立链接、存取操作
+ *  PS: I/O读取操作皆为异步，用promise封装异步调用
+ */
 var redis = require('redis'),
 	User = require('../models/user.js'),
 	logger = require('./log.js'),
@@ -18,7 +23,7 @@ redisClient.on('error', function (err){
 });
 
 var RedisOP = function (){};
-
+// 从API拿JS-SDK的jsticket
 RedisOP.prototype.getTicket = function (appid){
     return new Promise((resolve, reject) => {
         redisClient.get(appid + 'jsticket', function (err, data) {
@@ -44,6 +49,7 @@ RedisOP.prototype.getTicket = function (appid){
     });
 }
 
+// wechat-oauth授权模块初始化存token
 RedisOP.prototype.setToken = function (openid, token){
     return new Promise((resolve, reject) => {
         redisClient.set(appid + openid + "_access_token", JSON.stringify(token), function (err){
@@ -57,7 +63,7 @@ RedisOP.prototype.setToken = function (openid, token){
         });
     });
 }
-
+// wechat-oauth授权模块初始化取token
 RedisOP.prototype.getToken = function (openid){
     return new Promise((resolve, reject) => {
         redisClient.get(appid + openid + "_access_token", function (err, token){
@@ -70,7 +76,7 @@ RedisOP.prototype.getToken = function (openid){
         });
     });
 }
-
+// 存微信用户信息缓存，缓存信息有改动时，务必修改key值后缀
 RedisOP.prototype.setUserMsg = function (openid, obj){
     redisClient.set(appid + openid + "_qa_user_msg", JSON.stringify(obj), function (err){
         if (err){
@@ -80,7 +86,7 @@ RedisOP.prototype.setUserMsg = function (openid, obj){
         }
     });
 }
-
+// 取微信用户信息缓存，缓存过期时从服务器中取
 RedisOP.prototype.getUserMsg = function (openid){
     return new Promise((resolve, reject) => {
         redisClient.get(appid + openid + "_qa_user_msg", function (err, data){

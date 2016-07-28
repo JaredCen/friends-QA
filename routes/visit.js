@@ -5,7 +5,7 @@ var router = require("koa-router")(),
 	Redis = require("../config/redis.js"),
 	plugin = require('../config/plugin.js');
 
-
+// 查看问题答案
 router.get('/check', function *(next){
 	var userQuesMsg = yield UserQues.findOne({
 		_id: this.query._id,
@@ -13,6 +13,7 @@ router.get('/check', function *(next){
 	});
 	var sgObj = yield plugin.getSignature(this);
 	if (! userQuesMsg){
+		// 回答者查看答案
 		var userAnsMsg = yield UserAns.findOne({
 			page_id: this.query._id,
 			open_id: this.session.openid
@@ -28,6 +29,7 @@ router.get('/check', function *(next){
 			staticHost: plugin.staticHost
 		});
 	} else if (this.query.open_id) {	
+		// 出题者查看回答者的回答
 		var userAnsMsg = yield UserAns.findOne({
 			page_id: this.query._id,
 			open_id: this.query.open_id
@@ -43,6 +45,7 @@ router.get('/check', function *(next){
 			staticHost: plugin.staticHost
 		});		
 	} else {
+		// 出题者查看自己设置的答案
 		yield this.render('check', {
 			visit_self: true,
 			user_ques_msg: userQuesMsg,
@@ -55,6 +58,7 @@ router.get('/check', function *(next){
 	}
 });
 
+// 与其他活动页的链接
 router.get('/more', function *(next){
 	var word = [
 		{"main": "撩", "color": "pink", "title": "hey，知道怎么撩我吗", "count": "500"}, 
@@ -69,6 +73,7 @@ router.get('/more', function *(next){
 	});
 });
 
+// 二维码页面
 router.get('/qrcode', function *(next){
 	yield this.render('qrcode', {});
 });

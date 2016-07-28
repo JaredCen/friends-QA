@@ -1,5 +1,9 @@
-线上启动：pm2 start start.json
+## 环境配置
 
-未测试：微信授权，jssdk，redis
+## 启动方式
 
-问题录入：修改question.json文件后，访问 "http://"+this.host+"/node-scheme/qa/create/update"
+## 文件目录
+
+```
+
+```

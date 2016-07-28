@@ -1,3 +1,7 @@
+/*
+ *	author: Junrey
+ *	desc: 好友问答（QA）的问题数据表
+ */
 var connect = require('./connect.js'),
 	mongoose = require('mongoose');
 	

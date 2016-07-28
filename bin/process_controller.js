@@ -1,6 +1,6 @@
 /*
  *	author: Junrey
- *	desc: 当用此方法启动多进程时，记得要引入app.js里面转存的环境变量（即用转存变量替换process.env.*）
+ *	desc: 当用此方法启动多进程时，需要修改pm2配置文件start.json
  *	PS: pm2有cluster模式启动、管理多进程（ pm2 start start.json -i max/进程数 ）
  * 	
  */
@@ -15,6 +15,15 @@ var app = require('../app.js'),
 
 var CPUs = os.cpus();
 var pidArray = [];
+
+// 开发文档demo
+// cluster('app')
+//   .use(cluster.logger('logs'))
+//   .use(cluster.stats())
+//   .use(cluster.pidfiles('pids'))
+//   .use(cluster.cli())
+//   .use(cluster.repl(8888))
+//   .listen(3000);
 
 if (cluster.isMaster) {
 	// 判断是否为主进程

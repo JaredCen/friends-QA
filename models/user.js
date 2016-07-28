@@ -1,3 +1,7 @@
+/*
+ *  author: Junrey
+ *  desc: 微信用户信息数据表
+ */
 var connect = require('./connect.js'),
 	mongoose = require('mongoose');
 

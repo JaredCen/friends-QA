@@ -85,7 +85,7 @@ gulp.task('watch-html', function() {
 		.pipe(livereload());
 });
 
-gulp.task('rev',['less', 'build-js'], function (){
+gulp.task('rev', function (){
 	return gulp.src(['src/rev/**/*.json', 'views/index.xtpl'])
 		.pipe(revCollector({
 			replaceReved: true

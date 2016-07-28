@@ -1,6 +1,12 @@
+/*
+ *	author: Junrey
+ *	desc: mongodb建立链接
+ */
+
 var mongoose = require('mongoose'),
 	logger = require('../config/log.js');
 
+// mongoose不建议使用自带的promise，所以需要重新赋值本地promise/其他promise模块
 // mongoose.Promise = require('bluebird');
 mongoose.Promise = global.Promise;
 

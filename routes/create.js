@@ -90,6 +90,7 @@ router.get('/', function *(next){
 	});
 });
 
+// 开始出题
 router.get('/begin', function *(next){
 	var userMsg = yield Redis.getUserMsg(this.session.openid);
 	var query = yield Question.find({sex: userMsg.sex});
@@ -116,6 +117,7 @@ router.get('/begin', function *(next){
 	});
 });
 
+// 处理出题的异步请求
 router.post('/begin', function *(next){
 	var userQuesJson = yield parse.json(this);
 	var q_a_array = [];
@@ -143,6 +145,7 @@ router.post('/begin', function *(next){
 	this.body = {_id: _id};
 });
 
+// 出题结束
 router.get('/finish', function *(next){
 	var userMsg = yield Redis.getUserMsg(this.session.openid);
 	// 调用微信js-sdk

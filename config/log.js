@@ -1,3 +1,7 @@
+/*
+ *	author: Junrey
+ *	desc: log配置，添加类别时修改categories属性
+ */
 var path = require('path'),
 	Logger = require('mini-logger');
 

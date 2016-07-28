@@ -1,3 +1,7 @@
+/*
+ *	author: Junrey
+ *	desc: 回答者数据表，page_id为userQues数据表的_id
+ */
 var connect = require('./connect.js'),
 	mongoose = require('mongoose');
 
@@ -29,6 +33,10 @@ UserAnsDAO.prototype.find = function (obj){
 
 UserAnsDAO.prototype.findOne = function (obj){
 	return UserAnsModel.findOne(obj).exec();
+}
+
+UserAnsDAO.prototype.findAsc = function (obj){
+	return UserAnsModel.find(obj).sort({'_id': -1}).exec();
 }
 
 module.exports = new UserAnsDAO();

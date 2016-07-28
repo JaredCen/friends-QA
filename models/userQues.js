@@ -1,3 +1,7 @@
+/*
+ *	author: Junrey
+ *	desc: 创建者数据表，此表数据的_id为活动关键索引
+ */
 var connect = require('./connect.js'),
 	mongoose = require('mongoose');
 

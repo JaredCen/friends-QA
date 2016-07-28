@@ -60,17 +60,19 @@ router.get('/', function *(next){
 		_id: this.query._id,
 		open_id: this.session.openid
 	});
-	// already answer?
+	// 判断是否已经回答过问题
 	var userAnsMsg = yield UserAns.findOne({
 		page_id: this.query._id,
 		open_id: this.session.openid
 	});
-	var userAnsList = yield UserAns.find({
+	// 获取所有回答者数据
+	var userAnsList = yield UserAns.findAsc({
 		page_id: this.query._id
 	});
 	var userMsg = yield Redis.getUserMsg(this.session.openid);
 	var sgObj = yield plugin.getSignature(this);
 	if(! userAnsMsg && ! userQuesMsg){
+		// 非创建者且未回答
 		yield this.render('init', {
 			isAnswer: true,
 			userList: userAnsList,
@@ -82,6 +84,7 @@ router.get('/', function *(next){
 			staticHost: plugin.staticHost
 		});
 	} else if (! userAnsMsg && userQuesMsg._id) {
+		// 创建者
 		var domain = plugin.domainManage();
 		yield this.render('visit', {
 			visit_self: true,
@@ -97,6 +100,7 @@ router.get('/', function *(next){
 			staticHost: plugin.staticHost
 		});
 	} else if (userAnsMsg._id && ! userQuesMsg) {
+		// 未回答者
 		var domain = plugin.domainManage();
 		yield this.render('visit', {
 			visit_self: false,
@@ -117,7 +121,6 @@ router.get('/', function *(next){
 router.get('/begin', function *(next){
 	var sgObj = yield plugin.getSignature(this);
 	var userQuesMsg = yield UserQues.findOne({_id: this.query._id});
-	// can this.url contain quertstring?
 	yield this.render('begin', {
 		isAnswer: true,
 		questionMsg: userQuesMsg,
@@ -139,7 +142,7 @@ router.post('/begin', function *(next){
 	if (! userAnsRecord) {
 		var userQuesMsg = yield UserQues.findOne({_id: this.query._id});
 		var userMsg = yield Redis.getUserMsg(this.session.openid);
-		// score caculating...
+		// 回答得分计算
 		var q_a_array = [], correct, correctCount = 0, allCount = 0, score, evaluation;
 		for (var i=0; i<5; i++) {
 			allCount = allCount + parseInt(userQuesMsg.q_a[i].answer.length);
