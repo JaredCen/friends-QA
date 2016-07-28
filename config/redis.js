@@ -31,7 +31,8 @@ RedisOP.prototype.getTicket = function (appid){
             if (data && (Number(data.jsapi_ticket_deadline) - 500) > (Date.parse(new Date()) / 1000)) {
                 resolve(data.jsapi_ticket);
             } else {
-                request('http://zeus.shendun.info/server/api/fwh-jsapi-ticket?app_id=' + appid, function (error, response, body) {
+                // 通过request请求向后台API拿公众平台的jsticket
+                request('' + appid, function (error, response, body) {
                     if (!error && response.statusCode == 200){
                         data = JSON.parse(body).data;
                         redisClient.set(appid + '_jsticket', JSON.stringify(data), function (){

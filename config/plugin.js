@@ -44,14 +44,14 @@ var plugin = {
 		wechatClient.setOpts({"timeout": 2000});
 		return wechatClient;
 	},
-	// 中转域名随机渲染
+	// 中转域名随机渲染（减少微信封杀风险，用nginx重定向）
 	domainManage: function (){
 		if (! process.env.stHost) {
-			return "m.yeyeapp.in";
+			return "localhost:3000";
 		} else {
+			// 其他中转域名
 			var domain = [
-				"728.yeyejump.com",
-				"728.yeyelink.com"
+				""
 			];
 			var rand = Math.floor(Math.random() * domain.length);
 			return domain[rand];
@@ -60,7 +60,7 @@ var plugin = {
 	appid: process.env.appid,
 	appsecret: process.env.appsecret,
 	// 静态文件目录，线上环境||本地代理环境
-	staticHost: process.env.stHost || "//m.yeyeapp.in:3000"
+	staticHost: process.env.stHost || "localhost:3000"
 }
 
 module.exports = plugin;
