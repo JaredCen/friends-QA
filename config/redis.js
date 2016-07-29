@@ -37,7 +37,7 @@ RedisOP.prototype.getTicket = function (appid){
                         data = JSON.parse(body).data;
                         redisClient.set(appid + 'jsticket', JSON.stringify(data), function (){
                             // 设置键超时
-                            redisClient.expire(appid + '_jsticket', 2 * 24 * 60 * 60);
+                            redisClient.expire(appid + 'jsticket', 2 * 24 * 60 * 60);
                         });
                         resolve(data.jsapi_ticket);
                     } else {
