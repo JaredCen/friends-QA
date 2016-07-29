@@ -35,7 +35,7 @@ RedisOP.prototype.getTicket = function (appid){
                 request('' + appid, function (error, response, body) {
                     if (!error && response.statusCode == 200){
                         data = JSON.parse(body).data;
-                        redisClient.set(appid + '_jsticket', JSON.stringify(data), function (){
+                        redisClient.set(appid + 'jsticket', JSON.stringify(data), function (){
                             // 设置键超时
                             redisClient.expire(appid + '_jsticket', 2 * 24 * 60 * 60);
                         });
